@@ -1,5 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap');
+
+:root{
+    --adminPrimaryBackgroundColor:#3b3b41;
+    --adminSecondaryBackgroundColor:#212529;
+    --adminPrimaryTextColor:#d7d7d7;
+    --adminHeadingFontFamily:'Roboto Condensed',sans-serif;
+    --adminCBoxShadow:rgb(0 0 0 / 25%) 0px 0.0625em 0.0625em, rgb(0 0 0 / 25%) 0px 0.125em 0.5em, rgb(255 255 255 / 10%) 0px 0px 0px 1px inset;
+}   
+
+body{
+    background:var(--adminPrimaryBackgroundColor);
+}
+
 *{
     padding:0;
     margin:0;
     outline:none;
+    font-family:var(--adminHeadingFontFamily);
+}
+
+.top-navbar{
+    background: var(--adminSecondaryBackgroundColor);
+    width: 90%;
+    height: 5vh;
+    margin: auto 5rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0rem 1rem;
+    position:fixed;
+    box-shadow:var(--adminCBoxShadow);
+}
+.brand-logo{
+    text-decoration:none;
+    font-size:1.5rem;
+    color:var(--adminPrimaryTextColor);
+}
+.icon-cus{
+    font-size:1.5rem;
+    color:var(--adminPrimaryTextColor);
+}
+.nav-func{
+    width:10%;
+    display:flex;
+    justify-content:space-around;
+}
+.main-content{
+    width: 92%;
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    position:relative;
+    top:5rem;
+}
+.sidebar{
+    background: var(--adminSecondaryBackgroundColor);
+    width: 15rem;
+    height: 90vh;
+    border-radius: 10px;
+    position: fixed;
+    box-shadow:var(--adminCBoxShadow);
+}
+.container{
+    background: var(--adminSecondaryBackgroundColor);
+    width: 75%;
+    height: 90vh;
+    position: fixed;
+    left: 21%;
+    border-radius: 10px;
+    box-shadow: var(--adminCBoxShadow);
+    z-index: 0;
 }
