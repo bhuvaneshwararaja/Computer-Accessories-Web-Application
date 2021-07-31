@@ -18,58 +18,80 @@ body{
     outline:none;
     font-family:var(--adminHeadingFontFamily);
 }
-
-.top-navbar{
-    background: var(--adminSecondaryBackgroundColor);
-    width: 90%;
-    height: 5vh;
-    margin: auto 5rem;
-    margin-top: 1rem;
-    border-radius: 10px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0rem 1rem;
-    position:fixed;
-    box-shadow:var(--adminCBoxShadow);
-}
-.brand-logo{
-    text-decoration:none;
-    font-size:1.5rem;
-    color:var(--adminPrimaryTextColor);
-}
-.icon-cus{
-    font-size:1.5rem;
-    color:var(--adminPrimaryTextColor);
-}
-.nav-func{
-    width:10%;
-    display:flex;
-    justify-content:space-around;
-}
-.main-content{
-    width: 92%;
-    margin: auto;
-    height: 100vh;
+.wrapper{
     display: flex;
-    position:relative;
-    top:5rem;
 }
 .sidebar{
-    background: var(--adminSecondaryBackgroundColor);
-    width: 15rem;
-    height: 90vh;
-    border-radius: 10px;
-    position: fixed;
-    box-shadow:var(--adminCBoxShadow);
+    height: 100vh;
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+
 }
-.container{
-    background: var(--adminSecondaryBackgroundColor);
-    width: 75%;
-    height: 90vh;
-    position: fixed;
-    left: 21%;
-    border-radius: 10px;
-    box-shadow: var(--adminCBoxShadow);
-    z-index: 0;
+.brand--logo{
+    color: var(--adminPrimaryTextColor);
+    text-decoration: none;
+    font-size: 2rem;
+    padding:1rem;
+    text-align:center;
+}
+.col-centre{
+    display: flex;
+    flex-direction: column;
+    height:inherit;
+    justify-content:center;
+    align-items:center;
+}
+.side--wrapper{
+
+    justify-content: space-around;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    width:15rem;
+    background:var(--adminSecondaryBackgroundColor);
+    border-radius:10px;
+}
+.side--list{
+
+    list-style: none;
+    padding: 1rem;
+    margin:0rem .5rem;
+   transition:all .2s linear;
+}
+.side--list:hover{
+    border-right:3px solid crimson;
+    background: rgba(220,20,60,.1);
+}
+
+.side--links{
+    font-size:1.5rem;
+    color: var(--adminPrimaryTextColor);
+    text-decoration: none;
+}
+.icon{
+    font-size:1.5rem;
+    color:var(--adminPrimaryTextColor);
+    padding: 0rem 1rem;
+}
+
+.combiner{
+    width:100%;
+}
+.sign--out-btn{
+    float: right;
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    text-decoration: none;
+    padding: 0.2rem 1rem;
+    margin-top: .5rem;
+    margin-right: 1rem;
+    background:crimson;
+    border-radius:10rem;
+    transition:all .5s linear;
+}
+.sign--out-btn:hover{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
