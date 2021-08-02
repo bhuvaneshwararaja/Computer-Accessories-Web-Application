@@ -31,6 +31,15 @@ class AdminMongo:
         collection = dataBase[product_name]
         collection.insert_one(product_details)
 
+    @staticmethod
+    def view_collections():
+        products = {}
+        dataBase = AdminMongo.credential()
+        for category in dataBase.list_collection_names():
+            products[category] = {}
+            for product in enumerate(dataBase[category].find({})):
+                products[category][str(product[1].pop('_id'))] = product[1]
+        return products
 
 class Admin(Resource):
     def __init__(self):
@@ -42,12 +51,18 @@ class Admin(Resource):
         AdminMongo.create_collection(product['test']['productCatagory'], product['test'])
         return {"ReplyMessage": "Product added successfully"}
 
+    @staticmethod
+    def view_product():
+        product = AdminMongo.view_collections()
+        return product
+
 class User(Resource):
     def __init__(self):
         pass
 
 
-app.add_url_rule('/admin/add', view_func=Admin.add_product, methods=['POST'])
+app.add_url_rule('/admin/add/', view_func=Admin.add_product, methods=['POST'])
+app.add_url_rule('/admin/view/', view_func=Admin.view_product, methods=['GET'])
 
 if __name__ == '__main__':
     app.run(debug=True)
