@@ -1,11 +1,10 @@
 # Import needed libraries
-from flask import Flask, render_template,request
+from flask import Flask, render_template
 from flask_restful import Api, Resource
 import pymongo
 
 app = Flask(__name__)
 api = Api(app)
-
 @app.route('/test', methods=['GET'])  # Method for testing purpose
 def test():
     working = "yes"
@@ -16,7 +15,7 @@ class AdminMongo:
         pass
 
     # mongodb+srv://admin:<password>@admin.7iagg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-
+    
     @staticmethod
     def credential():
         (USER_NAME, PASSWORD, DB_NAME) = ("admin", "admin", "Products")  # Credentials for mongodb atlas connection with database name
@@ -24,7 +23,7 @@ class AdminMongo:
         client = pymongo.MongoClient(CONNECTION_URL)  # Establish connection with mongodb server
         dataBase = client[DB_NAME]  # Create DB / Use existing database
         return dataBase
-
+    
     @staticmethod
     def create_collection(product_name, product_details):
         dataBase = AdminMongo.credential()
@@ -38,7 +37,6 @@ class Admin(Resource):
 
     @staticmethod
     def add_product(product):
-        print(request.data)
         temp = eval(product)
         AdminMongo.create_collection(temp['name'], temp)
         return {"ReplyMessage": "Product added successfully"}
@@ -48,7 +46,7 @@ class User(Resource):
         pass
 
 
-app.add_url_rule('/admin/add', view_func=Admin.add_product, methods=['post'])
+app.add_url_rule('/admin/add', view_func=Admin.add_product, methods=['POST'])
 
 if __name__ == '__main__':
     app.run(debug=True)
