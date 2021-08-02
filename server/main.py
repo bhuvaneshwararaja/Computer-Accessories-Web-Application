@@ -1,6 +1,6 @@
 # Import needed libraries
 import flask
-from flask import Flask, render_template
+from flask import Flask, render_template ,jsonify
 from flask_restful import Api, Resource
 import pymongo
 
@@ -62,7 +62,7 @@ class Admin(Resource):
     @staticmethod
     def view_product():
         product = AdminMongo.view_collections()
-        return product
+        return jsonify(product)
 
     @staticmethod
     def view_category(category):
