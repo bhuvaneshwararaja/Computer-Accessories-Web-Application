@@ -6,7 +6,7 @@ function App() {
   return <>
   <Router>
     <Switch>
-      <Route path="/Admin/product" exact component={Product}></Route>
+      <Route path="/admin/product" exact component={Product}></Route>
     </Switch>
   </Router>
   </>
