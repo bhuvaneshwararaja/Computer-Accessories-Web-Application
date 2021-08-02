@@ -1,5 +1,5 @@
 # Import needed libraries
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 from flask_restful import Api, Resource
 import pymongo
 
@@ -38,6 +38,7 @@ class Admin(Resource):
 
     @staticmethod
     def add_product(product):
+        print(request.data)
         temp = eval(product)
         AdminMongo.create_collection(temp['name'], temp)
         return {"ReplyMessage": "Product added successfully"}
@@ -47,8 +48,7 @@ class User(Resource):
         pass
 
 
-app.add_url_rule('/admin/add/<product>', view_func=Admin.add_product, methods=['get'])
-
+app.add_url_rule('/admin/add', view_func=Admin.add_product, methods=['post'])
 
 if __name__ == '__main__':
     app.run(debug=True)
