@@ -80,7 +80,8 @@ const Product = () => {
                 </div>
                 <div className="text-center">
                <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-green-600 text-white hover:bg-green-700 m-3 " onClick={(e) => {
-                   fetch("url",{
+                   e.preventDefault()
+                   fetch("/admin/add",{
                        method:"POST",
                        headers:{
                            'Content-Type':"application/json"
