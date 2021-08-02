@@ -18,18 +18,20 @@ const Product = () => {
                 ...product,
                 [name]:value
             })
+           
             console.log(product)
     }
-    const uploadCloudinary = (e) =>{
+
+    const uploadCloudinary = async (e) =>{
         const files = e.target.files[0]
-                   
+
                     let formData = new FormData();
                     formData.append('file',files);
                     formData.append('upload_preset','o2e0xoco')
                     for (var key of formData.entries()) {
                         console.log(key[0] + ', ' + key[1]);
                     }
-                    fetch("https://api.cloudinary.com/v1_1/da8ygcsci/image/upload",{
+                 await fetch("https://api.cloudinary.com/v1_1/da8ygcsci/image/upload",{
                         method:"POST",
                         body:formData
                     }).then((res) => {return res.json()})
@@ -39,6 +41,7 @@ const Product = () => {
                             ...product,
                             "productImage":[...product.productImage,res.secure_url]
                         })
+                        e.target.classList.add("bg-green-100")
                     })
         }
     return <>
@@ -92,6 +95,8 @@ const Product = () => {
                    .then(res => res.json())
                    .then((data) => {
                        console.log(data)
+                       product.productImage = []
+                       document.querySelector("form").reset();
                    })
                }}>Save</button>
                <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-red-600 text-white hover:bg-red-700 m-3 ">Cancel</button>
