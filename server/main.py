@@ -41,6 +41,14 @@ class AdminMongo:
                 products[category][str(product[1].pop('_id'))] = product[1]
         return products
 
+    @staticmethod
+    def view_products(category):
+        products = {}
+        dataBase = AdminMongo.credential()
+        for product in enumerate(dataBase[category].find({})):
+            products[str(product[1].pop('_id'))] = product[1]
+        return products
+
 class Admin(Resource):
     def __init__(self):
         pass
@@ -56,6 +64,11 @@ class Admin(Resource):
         product = AdminMongo.view_collections()
         return product
 
+    @staticmethod
+    def view_category(category):
+        products = AdminMongo.view_products(category)
+        return products
+
 class User(Resource):
     def __init__(self):
         pass
@@ -63,6 +76,8 @@ class User(Resource):
 
 app.add_url_rule('/admin/add/', view_func=Admin.add_product, methods=['POST'])
 app.add_url_rule('/admin/view/', view_func=Admin.view_product, methods=['GET'])
+app.add_url_rule('/admin/category/<string:category>/', view_func=Admin.view_category, methods=['GET'])
+
 
 if __name__ == '__main__':
     app.run(debug=True)
