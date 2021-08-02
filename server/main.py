@@ -1,4 +1,5 @@
 # Import needed libraries
+import flask
 from flask import Flask, render_template
 from flask_restful import Api, Resource
 import pymongo
@@ -36,9 +37,9 @@ class Admin(Resource):
         pass
 
     @staticmethod
-    def add_product(product):
-        temp = eval(product)
-        AdminMongo.create_collection(temp['name'], temp)
+    def add_product():
+        product = flask.request.json
+        AdminMongo.create_collection(product['test']['productCatagory'], product['test'])
         return {"ReplyMessage": "Product added successfully"}
 
 class User(Resource):
