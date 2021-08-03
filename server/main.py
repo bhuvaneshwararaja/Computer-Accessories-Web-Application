@@ -1,6 +1,6 @@
 # Import needed libraries
 import flask
-from flask import Flask, render_template ,jsonify
+from flask import Flask, render_template, jsonify
 from flask_restful import Api, Resource
 import pymongo
 
@@ -14,8 +14,6 @@ def test():
 class AdminMongo:
     def __init__(self):
         pass
-
-    # mongodb+srv://admin:<password>@admin.7iagg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
     
     @staticmethod
     def credential():
@@ -55,19 +53,35 @@ class Admin(Resource):
 
     @staticmethod
     def add_product():
-        product = flask.request.json
-        AdminMongo.create_collection(product['test']['productCatagory'], product['test'])
-        return {"ReplyMessage": "Product added successfully"}
+        try:
+            product = flask.request.json
+        except:
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during add product"})
+
+        try:
+            AdminMongo.create_collection(product['test']['productCatagory'], product['test'])
+        except:
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection creation"})
+
+        return jsonify({"ReplyCode": "1", "ReplyMessage": "Success"})
 
     @staticmethod
     def view_product():
-        product = AdminMongo.view_collections()
+        try:
+            product = AdminMongo.view_collections()
+        except:
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection retrieval"})
+
         return jsonify(product)
 
     @staticmethod
     def view_category(category):
-        products = AdminMongo.view_products(category)
-        return products
+        try:
+            products = AdminMongo.view_products(category)
+        except:
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo specific collection retrieval"})
+
+        return jsonify(products)
 
 class User(Resource):
     def __init__(self):
