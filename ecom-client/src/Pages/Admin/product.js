@@ -28,9 +28,6 @@ const Product = () => {
                     let formData = new FormData();
                     formData.append('file',files);
                     formData.append('upload_preset','o2e0xoco')
-                    for (var key of formData.entries()) {
-                        console.log(key[0] + ', ' + key[1]);
-                    }
                  await fetch("https://api.cloudinary.com/v1_1/da8ygcsci/image/upload",{
                         method:"POST",
                         body:formData
@@ -77,7 +74,7 @@ const Product = () => {
                     <div className="flex flex-row justify-around">
                     <label className="w-40 text-2xl">ProductImage</label>
                 <div className="flex flex-col">
-                <input type="file" name="productImage" onChange={uploadCloudinary} className="w-96 p-2 "></input>
+                <input type="file" name="productImage"  onChange={uploadCloudinary} className="w-96 p-2 "></input>
                 <input type="file" name="productImage" onChange={uploadCloudinary} className="w-96 p-2 "></input>
                 </div>
                 </div>
