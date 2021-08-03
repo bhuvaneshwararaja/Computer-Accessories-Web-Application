@@ -7,7 +7,7 @@ function App() {
   return <>
   <Router>
     <Switch>
-      <Route path="/admin/product" exact component={Product}></Route>
+      <Route path="/admin/product" exact component={ProductView}></Route>
     </Switch>
   </Router>
   </>
