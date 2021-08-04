@@ -24,9 +24,9 @@ class AdminMongo:
         return dataBase
     
     @staticmethod
-    def create_collection(category, product_details):
+    def create_collection(product_details):
         dataBase = AdminMongo.credential()
-        collection = dataBase[category]
+        collection = dataBase["Products"]
         collection.insert_one(product_details)
 
     @staticmethod
@@ -66,7 +66,7 @@ class Admin(Resource):
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during add product"})
 
         try:
-            AdminMongo.create_collection(product['test']['productCatagory'], product['test'])
+            AdminMongo.create_collection(product['test'])
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection creation"})
 
