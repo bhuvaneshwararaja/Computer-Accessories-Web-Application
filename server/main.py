@@ -24,9 +24,9 @@ class AdminMongo:
         return dataBase
     
     @staticmethod
-    def create_collection(product_name, product_details):
+    def create_collection(category, product_details):
         dataBase = AdminMongo.credential()
-        collection = dataBase[product_name]
+        collection = dataBase[category]
         collection.insert_one(product_details)
 
     @staticmethod
@@ -46,6 +46,13 @@ class AdminMongo:
         for product in enumerate(dataBase[category].find({})):
             products[str(product[1].pop('_id'))] = product[1]
         return products
+
+    @staticmethod
+    def remove_collection(category, product_ids):
+        dataBase = AdminMongo.credential()
+        collection = dataBase[category]
+        for ids in product_ids:
+            collection.deleteOne({'_id': ids})
 
 class Admin(Resource):
     def __init__(self):
@@ -83,6 +90,22 @@ class Admin(Resource):
 
         return jsonify(products)
 
+    @staticmethod
+    def remove_product():
+        try:
+            product = flask.request.json
+        except:
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during delete product"})
+
+        try:
+            AdminMongo.remove_collection(product['test']['productCatagory'], product['test']['productId'])
+        except:
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection deletion"})
+
+        return jsonify({"ReplyCode": "1", "ReplyMessage": "Success"})
+
+
+
 class User(Resource):
     def __init__(self):
         pass
@@ -91,6 +114,7 @@ class User(Resource):
 app.add_url_rule('/admin/add/', view_func=Admin.add_product, methods=['POST'])
 app.add_url_rule('/admin/view/', view_func=Admin.view_product, methods=['GET'])
 app.add_url_rule('/admin/category/<string:category>/', view_func=Admin.view_category, methods=['GET'])
+app.add_url_rule('/admin/remove/', view_func=Admin.view_product, methods=['POST'])
 
 
 if __name__ == '__main__':
