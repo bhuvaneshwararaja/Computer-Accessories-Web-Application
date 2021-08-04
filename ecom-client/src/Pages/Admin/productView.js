@@ -24,7 +24,7 @@ const ProductView = () => {
     
     return <>
         <AdminNavBar />
-        {/* <Product /> */}
+        <Product onclick="true" />
         <div></div>
         <section className="relative top-28">
             <div className="h-12 md:w-1/2 2xl:w-1/3 mb-5 mr-5 flex float-right justify-around flex-row-reverse rounded-2xl ">
