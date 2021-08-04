@@ -1,34 +1,182 @@
 import {useState,useEffect} from "react"
 import AdminNavBar from "../../Components/AdminNavBar"
-import Product from "../Admin/product"
 const ProductView = () => {
     const [data,setData] = useState()
-    const [categoryKey,setCategoryKey] = useState()
+    const [action,setAction] = useState("Add")
+    const [filterCategory,setFilterCategory] = useState("All")
+    const [Key,setKey] = useState()
+    const catagories = ["Adaptors","Audio & Video accessories","Keyboard & Mouse","Hardisk","Boards","Laptop Skins"]
+    const productDetails = {
+        productName:"",
+        productDescription:"",
+        productPrice:"",
+        productCatagory:"",
+        productImage:[]
+    }
+    const [product,setProduct] = useState(productDetails)
+    const HandleInputChange = (e) => {
+            const {name,value} = e.target;
+            console.log(e.target)
+            setProduct({
+                ...product,
+                [name]:value
+            })
+           
+            console.log(product)
+    }
+
+    const uploadCloudinary = async (e) =>{
+        const files = e.target.files[0]
+
+                    let formData = new FormData();
+                    formData.append('file',files);
+                    formData.append('upload_preset','o2e0xoco')
+                 await fetch("https://api.cloudinary.com/v1_1/da8ygcsci/image/upload",{
+                        method:"POST",
+                        body:formData
+                    }).then((res) => {return res.json()})
+                    .then((res) => {
+                        
+                        setProduct({
+                            ...product,
+                            "productImage":[...product.productImage,res.secure_url]
+                        })
+                        e.target.classList.add("bg-green-100")
+                    })
+        }
     useEffect(() => {
         fetch("/admin/view/")
         .then(res => res.json())
         .then((data) => {
-           setData(data)
-            setCategoryKey(Object.keys(data))
-            console.log(data)
+           setData(data.Products)
+           
+            setKey(Object.keys(data.Products))
+            
             
         })
     },[])
     let count =0
-    if(data != undefined && categoryKey != undefined){
-        //const {productName,productDescription,productPrice,productCatagory} = data[categoryKey[1]][Object.keys(data[categoryKey[1]])[0]]
-       
-        
-    }
-        
-    
     return <>
         <AdminNavBar />
-        <Product onclick="true" />
-        <div></div>
-        <section className="relative top-28">
-            <div className="h-12 md:w-1/2 2xl:w-1/3 mb-5 mr-5 flex float-right justify-around flex-row-reverse rounded-2xl ">
-                <button className="bg-green-600 px-5 py-3 text-white  rounded-2xl float-right shadow-xl">Addproduct</button>
+        {/* product modal section */}
+        <section className="w-full h-screen flex justify-center invisible opacity-0 transition-all duration-500 relative -top-1/2 z-10" id="modal">
+            <form className=" flex flex-col md:w-9/12 2xl:w-1/2 my-auto bg-white h-4/5 justify-evenly shadow-xl rounded-xl">
+                {action === "Add" ? (
+                    <>
+                           <div className="flex flex-row justify-around">
+                <label className="w-40 text-2xl">ProductName</label>
+                <input type="text" name="productName" className="transition-all duration-500 focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" placeholder="Product Name"onChange={HandleInputChange}></input>
+                </div>
+                
+                
+                <div className="flex flex-row justify-around">
+                <label className="w-40 text-2xl">ProductCatagory</label>
+                <select className="transition-all duration-500 bg-white focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" name="productCatagory" onChange={HandleInputChange}>
+                    <option value="" default hidden>select catagory</option>
+                    {catagories.map((data,index) => {
+                        return <option key={index} value={data}>{data}</option>
+                    })}
+                </select>
+                </div>
+                
+               
+                <div className="flex flex-row justify-around" >
+
+                <label className="w-40 text-2xl">ProductDescription</label>
+                <textarea type="text" name="productDescription" className="transition-all duration-500 focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700 resize-none" placeholder="Product description"onChange={HandleInputChange}></textarea>
+                </div>
+                <div className="flex flex-row justify-around">
+                <label className="w-40 text-2xl">ProdutPrice</label>
+                <input type="text" name="productPrice" className="transition-all duration-500 focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" placeholder="product price" onChange={HandleInputChange}></input>
+                </div>
+                    <div className="flex flex-row justify-around">
+                    <label className="w-40 text-2xl">ProductImage</label>
+                <div className="flex flex-col">
+                <input type="file" name="productImage"  onChange={uploadCloudinary} className="w-96 p-2 "></input>
+                <input type="file" name="productImage" onChange={uploadCloudinary} className="w-96 p-2 "></input>
+                </div>
+                </div>
+                <div className="text-center">
+               <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-green-600 text-white hover:bg-green-700 m-3 " onClick={(e) => {
+                   e.preventDefault()
+                   fetch("/admin/add/",{
+                    'method':"POST",
+                       headers:{
+                            
+                           'Content-Type':"application/json",
+                           'accept':"application/json"
+                       },
+                       body:JSON.stringify({test:product})
+                   })
+                   .then(res => res.json())
+                   .then((data) => {
+                       console.log(data)
+                       product.productImage = []
+                       document.querySelector("form").reset();
+                   })
+               }}>Save</button>
+               <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-red-600 text-white hover:bg-red-700 m-3 " onClick={(e) => {
+                   e.preventDefault()
+                   const modal = document.getElementById("modal")
+                   modal.classList.add("invisible");
+                   modal.classList.add("opacity-0");
+                   modal.style.background = "transparent";
+               }}>Cancel</button>
+                </div>
+                    </>
+                ):(
+                    <>
+                <div className="flex flex-row justify-around">
+                <label className="w-40 text-2xl">ProductCatagory</label>
+                <select className="transition-all duration-500 bg-white focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" name="productCatagory" onChange={HandleInputChange}>
+                    <option value="" default hidden>select catagory</option>
+                    {catagories.map((data,index) => {
+                        return <option key={index} value={data}>{data}</option>
+                    })}
+                </select>
+                </div>
+                
+                   
+                <div className="text-center">
+               <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-green-600 text-white hover:bg-green-700 m-3 " onClick={(e) => {
+                //    Delete action
+               }}>Delete</button>
+               <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-red-600 text-white hover:bg-red-700 m-3 " onClick={(e) => {
+                   e.preventDefault()
+                   const modal = document.getElementById("modal")
+                   modal.classList.add("invisible");
+                   modal.classList.add("opacity-0");
+                   modal.style.background = "transparent";
+               }}>Cancel</button>
+                </div>
+                    </>
+                )}
+                 
+               
+            </form>
+        </section> 
+        
+        {/* view section */}
+        
+        <section className="absolute top-28 z-0 w-full">
+            <div className="h-12 w-full mb-5 mr-5 flex float-right justify-end rounded-2xl ">
+                <button className="bg-green-600 px-5 py-3 text-white  rounded-2xl float-right shadow-xl mx-5" onClick={() => {
+                    setAction("Add")
+                    const modal = document.getElementById("modal")
+                    modal.classList.remove("invisible");
+                    modal.classList.remove("opacity-0");
+                    modal.style.background = "rgba(0,0,0,.5)";
+                }}>Addproduct</button>
+                     <button className="transition-all duration-500 bg-red-500 px-5 text-white rounded-xl text-xl hover:bg-red-600 mx-5"
+                        onClick={() => {
+                            setAction("Delete")
+                            const modal = document.getElementById("modal")
+                            modal.classList.remove("invisible");
+                            modal.classList.remove("opacity-0");
+                            modal.style.background = "rgba(0,0,0,.5)";
+                        }}
+                     >Delete</button>
+                     
                 <select className="bg-white shadow-xl border-2  px-6 py-3 rounded-2xl">
                     <option default hidden>Select range</option>
                     <option>6 per row</option>
@@ -38,47 +186,56 @@ const ProductView = () => {
                     <option>15 per row</option>
                     <option>All per row</option>
                 </select>
-                <select className="bg-white shadow-xl border-2 mx-5 px-6 py-3 rounded-2xl">
+                <select className="bg-white shadow-xl border-2 mx-5 px-6 py-3 rounded-2xl" onChange={(e) => {
+                    e.preventDefault()
+                    setFilterCategory(e.target.value)
+                }}>
                     <option default hidden>Select Catagory</option>
-                    <option>Adaptors</option>
-                    <option>Audio & Video Accessories</option>
-                    <option>Board</option>
-                    <option>Hardisk</option>
-                    <option>Keyboard & Mouse</option>
-                    <option>Laptop Skins</option>
+                    <option value="All">All</option>
+                    {catagories.map((data,index) => {
+                        return <option key={index} value={data}>{data}</option>
+                    })}
+                    <option value="All">ALL</option>
                 </select>
             </div>
-            <section className="w-full overflow-x-auto overflow-y-scroll" style={{"height":"45rem"}}>
+            <section className="w-11/12 m-auto rounded-2xl overflow-x-auto overflow-y-scroll" style={{"height":"45rem"}}>
             <table className="w-full shadow-xl ">
-            <tr>
-                {['SINO','Image','productName','Category','Description','Price','Edit','Delete','view'].map((header,index) => {
+            <thead>
+                {['SINO','Image','productName','Category','Description','Price'].map((header,index) => {
                     return <th className="text-left p-4 bg-white border-b-2 border-r-2">{header.toUpperCase()}</th>
                 })}
               
-            </tr>
-            {data !== undefined && categoryKey !== undefined ?(
-                 categoryKey.map((keys,index) => {
-                    const key = Object.keys(data[keys])
-                    console.log(key)
-                    
-                    return <>{
-                        key.map((productKey,index) => {
-                            const {productName,productDescription,productPrice,productCatagory,productImage} = data[keys][productKey]
-                            count++
-                                return <tr>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2">{count} <input type="checkbox" value={data[keys][productKey]}></input></td>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2"><img src={productImage[0]} alt="" className="w-20"></img></td>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2">{productName}</td>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2">{productCatagory}</td>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2">{productDescription.slice(0,50)+"..."}</td>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2">{productPrice}</td>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2"><button className="transition-all duration-500 bg-green-500 px-5 text-white rounded-xl text-xl hover:bg-green-600">Edit</button></td>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2"><button className="transition-all duration-500 bg-red-500 px-5 text-white rounded-xl text-xl hover:bg-red-600">Delete</button></td>
-                                    <td className="text-left p-4 bg-white border-b-2 border-r-2"><button className="transition-all duration-500 bg-yellow-500 px-5 text-white rounded-xl text-xl hover:bg-yellow-600">View</button></td>
-                                </tr>
-                            })
-                        }</>
-            })
+            </thead>
+            {data !== undefined && Key !== undefined ?(
+                    Key.map((productKey,index) => {
+                        const {productName,productDescription,productPrice,productCatagory,productImage} = data[productKey];
+                        count++;
+                        if(filterCategory === productCatagory){
+                            return <tr>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{count}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2"><img src={productImage[0]} alt="" className="w-20"></img></td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productName}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productCatagory}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productDescription.slice(0,50)+"..."}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productPrice}</td>
+                         
+                        </tr>
+                        }
+                        else if(filterCategory === "All"){
+                          return  <tr>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{count}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2"><img src={productImage[0]} alt="" className="w-20"></img></td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productName}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productCatagory}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productDescription.slice(0,50)+"..."}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productPrice}</td>
+                         
+                        </tr>
+                        }
+                       
+                    })
+              
+            
             ):("")}
         </table>
             </section>
