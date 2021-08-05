@@ -2,6 +2,6 @@
 
 
 ## Tech Stack Used
-  Front-End : React, Tailwind CSS 
-  Back-End  : Python, Python (Rest API)
-  DataBase  : MongoDB (NoSQL)
+  Front-End : React, Tailwind CSS <br>
+  Back-End  : Python, Python (Rest API) <br>
+  DataBase  : MongoDB (NoSQL) <br>
