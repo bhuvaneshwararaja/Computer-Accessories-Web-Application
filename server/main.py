@@ -27,7 +27,7 @@ class AdminMongo:
     def create_collection(product_details):
         dataBase = AdminMongo.credential()
         collection = dataBase["Products"]
-        collection.insert_one(product_details)
+        collection.insert_one(product_details)x
 
     @staticmethod
     def view_collections():
