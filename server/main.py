@@ -3,6 +3,7 @@ import flask
 from flask import Flask, render_template, jsonify
 from flask_restful import Api, Resource
 import pymongo
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 api = Api(app)
@@ -27,7 +28,7 @@ class AdminMongo:
     def create_collection(product_details):
         dataBase = AdminMongo.credential()
         collection = dataBase["Products"]
-        collection.insert_one(product_details)x
+        collection.insert_one(product_details)
 
     @staticmethod
     def view_collections():
@@ -48,11 +49,11 @@ class AdminMongo:
         return products
 
     @staticmethod
-    def remove_collection(category, product_ids):
+    def remove_collection(product_ids):
         dataBase = AdminMongo.credential()
-        collection = dataBase["PRODUCTS"]
+        collection = dataBase["Products"]
         for ids in product_ids:
-            collection.deleteOne({'_id': ids})
+            collection.delete_one({"_id": ObjectId(ids)})
 
 class Admin(Resource):
     def __init__(self):
@@ -99,7 +100,7 @@ class Admin(Resource):
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during delete product"})
 
         try:
-            AdminMongo.remove_collection(product['test']['productCatagory'], product['test']['productId'])
+            AdminMongo.remove_collection(product['test']['productId'])
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection deletion"})
 
