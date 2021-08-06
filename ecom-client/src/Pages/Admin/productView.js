@@ -154,25 +154,28 @@ const ProductView = () => {
                        <>
                         {data !== undefined && Key !== undefined ?(
                             <>
-                                <tabel className="w-full h-1/4 table verflow-x-auto overflow-y-scroll">
+                                <table className="w-full h-1/4 table verflow-x-auto overflow-y-scroll">
                                     <tr>
                                         <th className="text-left p-4 bg-white border-b-2 border-r-2">Select</th>
                                         
                                         <th className="text-left p-4 bg-white border-b-2 border-r-2">ProductName</th>
                                         <th className="text-left p-4 bg-white border-b-2 border-r-2">ProductCategory</th>
                                     </tr>
+                                    
                                    { Key.map((productKey,index) => {
                         const {productName,productCatagory,productImage} = data[productKey];
                         count++;
                         if(deleteCategory === productCatagory){
                             return <tr>
-                            <td className="text-left p-4 bg-white border-b-2 border-r-2"><input type="checkbox" onChange={(e) => {
-                                e.preventDefault()
-                                setDeletKey([...deleteKey,e.target.value])
-                                console.log(deleteKey)
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">
+                            <input type="checkbox" onChange={(e) => {
+                                console.log(e.target.value)
+                                let temp = [...deleteKey,e.target.value]
+                                setDeletKey(temp)
+                                
                                  
-                            }} value={productKey}></input></td>
-                           
+                            }} value={productKey}></input>
+                            </td>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2">{productName}</td>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2">{productCatagory}</td>
       
@@ -180,7 +183,7 @@ const ProductView = () => {
                         </tr>
                         }         
                     })}
-                                </tabel>
+                                </table>
                             </>
 
                         ):("")}
