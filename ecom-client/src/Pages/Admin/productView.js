@@ -71,7 +71,7 @@ const ProductView = () => {
         modal.classList.remove("opacity-0");
         modal.style.background = "rgba(0,0,0,.5)";
     }
-    let count =0
+    
     return <>
         <AdminNavBar />
         {/* product modal section */}
@@ -162,9 +162,11 @@ const ProductView = () => {
                                         <th className="text-left p-4 bg-white border-b-2 border-r-2">ProductCategory</th>
                                     </tr>
                                     
-                                   { Key.map((productKey,index) => {
+                                   { 
+                                  
+                                   Key.map((productKey,index) => {
                         const {productName,productCatagory,productImage} = data[productKey];
-                        count++;
+
                         if(deleteCategory === productCatagory){
                             return <tr>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2">
@@ -264,10 +266,11 @@ const ProductView = () => {
             {data !== undefined && Key !== undefined ?(
                     Key.map((productKey,index) => {
                         const {productName,productDescription,productPrice,productCatagory,productImage} = data[productKey];
-                        count++;
+                        
                         if(filterCategory === productCatagory){
+                            
                             return <tr>
-                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{count}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{index}</td>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2"><img src={productImage[0]} alt="" className="w-20"></img></td>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2">{productName}</td>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2">{productCatagory}</td>
@@ -278,7 +281,7 @@ const ProductView = () => {
                         }
                         else if(filterCategory === "All"){
                           return  <tr>
-                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{count}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{index+1}</td>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2"><img src={productImage[0]} alt="" className="w-20"></img></td>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2">{productName}</td>
                             <td className="text-left p-4 bg-white border-b-2 border-r-2">{productCatagory}</td>
@@ -287,6 +290,7 @@ const ProductView = () => {
                          
                         </tr>
                         }
+                        
                        
                     })
               
