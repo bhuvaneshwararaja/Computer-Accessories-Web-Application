@@ -7,10 +7,6 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 api = Api(app)
-@app.route('/test', methods=['GET'])  # Method for testing purpose
-def test():
-    working = "yes"
-    return render_template('./Admin/dashboard.html', working=working)
 
 class AdminMongo:
     def __init__(self):
@@ -25,23 +21,21 @@ class AdminMongo:
         return dataBase
     
     @staticmethod
-    def create_collection(product_details):
+    def create_record(product_details):
         dataBase = AdminMongo.credential()
         collection = dataBase["Products"]
         collection.insert_one(product_details)
 
     @staticmethod
-    def view_collections():
-        products = {}
+    def view_records():
+        products = {'products': {}}
         dataBase = AdminMongo.credential()
-        for category in dataBase.list_collection_names():
-            products[category] = {}
-            for product in enumerate(dataBase[category].find({})):
-                products[category][str(product[1].pop('_id'))] = product[1]
+        for product in enumerate(dataBase["Products"].find({})):
+            products["products"][str(product[1].pop('_id'))] = product[1]
         return products
 
     @staticmethod
-    def remove_collection(product_ids):
+    def remove_records(product_ids):
         dataBase = AdminMongo.credential()
         collection = dataBase["Products"]
         for ids in product_ids:
@@ -59,18 +53,18 @@ class Admin(Resource):
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during add product"})
 
         try:
-            AdminMongo.create_collection(product['test'])
+            AdminMongo.create_record(product['test'])
         except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection creation"})
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo data insertion"})
 
         return jsonify({"ReplyCode": "1", "ReplyMessage": "Success"})
 
     @staticmethod
     def view_product():
         try:
-            product = AdminMongo.view_collections()
+            product = AdminMongo.view_records()
         except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection retrieval"})
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo data retrieval"})
 
         return jsonify(product)
 
@@ -78,17 +72,15 @@ class Admin(Resource):
     def remove_product():
         try:
             product = flask.request.json
-            print(product)
         except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during delete product"})
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during remove product"})
 
         try:
-            AdminMongo.remove_collection(product['test']['productId'])
+            AdminMongo.remove_records(product['test']['productId'])
         except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection deletion"})
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo data deletion"})
 
         return jsonify({"ReplyCode": "1", "ReplyMessage": "Success"})
-
 
 
 class User(Resource):
