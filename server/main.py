@@ -50,7 +50,7 @@ class AdminMongo:
     @staticmethod
     def remove_collection(category, product_ids):
         dataBase = AdminMongo.credential()
-        collection = dataBase[category]
+        collection = dataBase["PRODUCTS"]
         for ids in product_ids:
             collection.deleteOne({'_id': ids})
 
@@ -94,6 +94,7 @@ class Admin(Resource):
     def remove_product():
         try:
             product = flask.request.json
+            print(product)
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during delete product"})
 
@@ -114,7 +115,7 @@ class User(Resource):
 app.add_url_rule('/admin/add/', view_func=Admin.add_product, methods=['POST'])
 app.add_url_rule('/admin/view/', view_func=Admin.view_product, methods=['GET'])
 app.add_url_rule('/admin/category/<string:category>/', view_func=Admin.view_category, methods=['GET'])
-app.add_url_rule('/admin/remove/', view_func=Admin.view_product, methods=['POST'])
+app.add_url_rule('/admin/remove/', view_func=Admin.remove_product, methods=['POST'])
 
 
 if __name__ == '__main__':
