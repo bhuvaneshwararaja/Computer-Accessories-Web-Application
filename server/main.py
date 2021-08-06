@@ -7,10 +7,6 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 api = Api(app)
-@app.route('/test', methods=['GET'])  # Method for testing purpose
-def test():
-    working = "yes"
-    return render_template('./Admin/dashboard.html', working=working)
 
 class AdminMongo:
     def __init__(self):
@@ -18,38 +14,28 @@ class AdminMongo:
     
     @staticmethod
     def credential():
-        (USER_NAME, PASSWORD, DB_NAME) = ("admin", "admin", "Products")  # Credentials for mongodb atlas connection with database name
+        (USER_NAME, PASSWORD, DB_NAME) = ("admin", "admin", "ComputerAccessories")  # Credentials for mongodb atlas connection with database name
         CONNECTION_URL = f"mongodb+srv://{USER_NAME}:{PASSWORD}@admin.7iagg.mongodb.net/{DB_NAME}?ssl=true&ssl_cert_reqs=CERT_NONE"
         client = pymongo.MongoClient(CONNECTION_URL)  # Establish connection with mongodb server
         dataBase = client[DB_NAME]  # Create DB / Use existing database
         return dataBase
     
     @staticmethod
-    def create_collection(product_details):
+    def create_record(product_details):
         dataBase = AdminMongo.credential()
         collection = dataBase["Products"]
         collection.insert_one(product_details)
 
     @staticmethod
-    def view_collections():
-        products = {}
+    def view_records():
+        products = {'products': {}}
         dataBase = AdminMongo.credential()
-        for category in dataBase.list_collection_names():
-            products[category] = {}
-            for product in enumerate(dataBase[category].find({})):
-                products[category][str(product[1].pop('_id'))] = product[1]
+        for product in enumerate(dataBase["Products"].find({})):
+            products["products"][str(product[1].pop('_id'))] = product[1]
         return products
 
     @staticmethod
-    def view_products(category):
-        products = {}
-        dataBase = AdminMongo.credential()
-        for product in enumerate(dataBase[category].find({})):
-            products[str(product[1].pop('_id'))] = product[1]
-        return products
-
-    @staticmethod
-    def remove_collection(product_ids):
+    def remove_records(product_ids):
         dataBase = AdminMongo.credential()
         collection = dataBase["Products"]
         for ids in product_ids:
@@ -67,45 +53,34 @@ class Admin(Resource):
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during add product"})
 
         try:
-            AdminMongo.create_collection(product['test'])
+            AdminMongo.create_record(product['test'])
         except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection creation"})
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo data insertion"})
 
         return jsonify({"ReplyCode": "1", "ReplyMessage": "Success"})
 
     @staticmethod
     def view_product():
         try:
-            product = AdminMongo.view_collections()
+            product = AdminMongo.view_records()
         except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection retrieval"})
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo data retrieval"})
 
         return jsonify(product)
-
-    @staticmethod
-    def view_category(category):
-        try:
-            products = AdminMongo.view_products(category)
-        except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo specific collection retrieval"})
-
-        return jsonify(products)
 
     @staticmethod
     def remove_product():
         try:
             product = flask.request.json
-            print(product)
         except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during delete product"})
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during remove product"})
 
         try:
-            AdminMongo.remove_collection(product['test']['productId'])
+            AdminMongo.remove_records(product['test']['productId'])
         except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo collection deletion"})
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo data deletion"})
 
         return jsonify({"ReplyCode": "1", "ReplyMessage": "Success"})
-
 
 
 class User(Resource):
@@ -115,7 +90,6 @@ class User(Resource):
 
 app.add_url_rule('/admin/add/', view_func=Admin.add_product, methods=['POST'])
 app.add_url_rule('/admin/view/', view_func=Admin.view_product, methods=['GET'])
-app.add_url_rule('/admin/category/<string:category>/', view_func=Admin.view_category, methods=['GET'])
 app.add_url_rule('/admin/remove/', view_func=Admin.remove_product, methods=['POST'])
 
 
