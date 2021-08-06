@@ -18,7 +18,7 @@ class AdminMongo:
     
     @staticmethod
     def credential():
-        (USER_NAME, PASSWORD, DB_NAME) = ("admin", "admin", "Products")  # Credentials for mongodb atlas connection with database name
+        (USER_NAME, PASSWORD, DB_NAME) = ("admin", "admin", "ComputerAccessories")  # Credentials for mongodb atlas connection with database name
         CONNECTION_URL = f"mongodb+srv://{USER_NAME}:{PASSWORD}@admin.7iagg.mongodb.net/{DB_NAME}?ssl=true&ssl_cert_reqs=CERT_NONE"
         client = pymongo.MongoClient(CONNECTION_URL)  # Establish connection with mongodb server
         dataBase = client[DB_NAME]  # Create DB / Use existing database
@@ -38,14 +38,6 @@ class AdminMongo:
             products[category] = {}
             for product in enumerate(dataBase[category].find({})):
                 products[category][str(product[1].pop('_id'))] = product[1]
-        return products
-
-    @staticmethod
-    def view_products(category):
-        products = {}
-        dataBase = AdminMongo.credential()
-        for product in enumerate(dataBase[category].find({})):
-            products[str(product[1].pop('_id'))] = product[1]
         return products
 
     @staticmethod
@@ -83,15 +75,6 @@ class Admin(Resource):
         return jsonify(product)
 
     @staticmethod
-    def view_category(category):
-        try:
-            products = AdminMongo.view_products(category)
-        except:
-            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo specific collection retrieval"})
-
-        return jsonify(products)
-
-    @staticmethod
     def remove_product():
         try:
             product = flask.request.json
@@ -115,7 +98,6 @@ class User(Resource):
 
 app.add_url_rule('/admin/add/', view_func=Admin.add_product, methods=['POST'])
 app.add_url_rule('/admin/view/', view_func=Admin.view_product, methods=['GET'])
-app.add_url_rule('/admin/category/<string:category>/', view_func=Admin.view_category, methods=['GET'])
 app.add_url_rule('/admin/remove/', view_func=Admin.remove_product, methods=['POST'])
 
 
