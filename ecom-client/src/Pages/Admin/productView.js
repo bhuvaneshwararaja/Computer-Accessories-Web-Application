@@ -3,9 +3,11 @@ import AdminNavBar from "../../Components/AdminNavBar"
 const ProductView = () => {
     const [data,setData] = useState()
     const [action,setAction] = useState("Add")
+    const [deleteCategory,setDeleteCategory] = useState()
     const [filterCategory,setFilterCategory] = useState("All")
     const [Key,setKey] = useState()
     const catagories = ["Adaptors","Audio & Video accessories","Keyboard & Mouse","Hardisk","Boards","Laptop Skins"]
+    const [deleteKey,setDeletKey] = useState([])
     const productDetails = {
         productName:"",
         productDescription:"",
@@ -55,6 +57,20 @@ const ProductView = () => {
             
         })
     },[])
+    const closeModal = (e) => {
+        e.preventDefault()
+                   const modal = document.getElementById("modal")
+                   modal.classList.add("invisible");
+                   modal.classList.add("opacity-0");
+                   modal.style.background = "transparent";
+    }
+    const openModalWithAction = (e) => {
+        setAction(e.target.name)
+        const modal = document.getElementById("modal")
+        modal.classList.remove("invisible");
+        modal.classList.remove("opacity-0");
+        modal.style.background = "rgba(0,0,0,.5)";
+    }
     let count =0
     return <>
         <AdminNavBar />
@@ -115,39 +131,87 @@ const ProductView = () => {
                        document.querySelector("form").reset();
                    })
                }}>Save</button>
-               <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-red-600 text-white hover:bg-red-700 m-3 " onClick={(e) => {
-                   e.preventDefault()
-                   const modal = document.getElementById("modal")
-                   modal.classList.add("invisible");
-                   modal.classList.add("opacity-0");
-                   modal.style.background = "transparent";
-               }}>Cancel</button>
+               <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-red-600 text-white hover:bg-red-700 m-3 " onClick={closeModal}>Cancel</button>
                 </div>
                     </>
                 ):(
                     <>
                 <div className="flex flex-row justify-around">
                 <label className="w-40 text-2xl">ProductCatagory</label>
-                <select className="transition-all duration-500 bg-white focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" name="productCatagory" onChange={HandleInputChange}>
+                <select className="transition-all duration-500 bg-white focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" name="productCatagory" onChange={(e) => {
+                    e.preventDefault()
+                    setDeleteCategory(e.target.value)
+                }}>
                     <option value="" default hidden>select catagory</option>
                     {catagories.map((data,index) => {
                         return <option key={index} value={data}>{data}</option>
                     })}
                 </select>
                 </div>
+               
+                    {deleteCategory !== undefined ?(
+
+                       <>
+                        {data !== undefined && Key !== undefined ?(
+                            <>
+                                <tabel className="w-full h-1/4 table verflow-x-auto overflow-y-scroll">
+                                    <tr>
+                                        <th className="text-left p-4 bg-white border-b-2 border-r-2">Select</th>
+                                        
+                                        <th className="text-left p-4 bg-white border-b-2 border-r-2">ProductName</th>
+                                        <th className="text-left p-4 bg-white border-b-2 border-r-2">ProductCategory</th>
+                                    </tr>
+                                   { Key.map((productKey,index) => {
+                        const {productName,productCatagory,productImage} = data[productKey];
+                        count++;
+                        if(deleteCategory === productCatagory){
+                            return <tr>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2"><input type="checkbox" onChange={(e) => {
+                                e.preventDefault()
+                                setDeletKey([...deleteKey,e.target.value])
+                                console.log(deleteKey)
+                                 
+                            }} value={productKey}></input></td>
+                           
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productName}</td>
+                            <td className="text-left p-4 bg-white border-b-2 border-r-2">{productCatagory}</td>
+      
+                         
+                        </tr>
+                        }         
+                    })}
+                                </tabel>
+                            </>
+
+                        ):("")}
+                       </>
+                    ):(<h3 className="text-center text-xl">No Category Selected</h3>)}
+              
+            
+            
+              
                 
                    
                 <div className="text-center">
                <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-green-600 text-white hover:bg-green-700 m-3 " onClick={(e) => {
-                //    Delete action
+                   e.preventDefault();
+                   const product = {
+                       productCategory:deleteCategory,
+                       productId:deleteKey
+                   }
+                   console.log(product)
+                   fetch("/admin/remove/",{
+                       "method":"POST",
+                       headers:{
+                           "Content-Type":"application/json",
+                           "accept":"application/json"
+                       },
+                       body:JSON.stringify({test:product})
+                   })
+                   .then(res => {return res})
+                   .then((data) => {console.log(data)})
                }}>Delete</button>
-               <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-red-600 text-white hover:bg-red-700 m-3 " onClick={(e) => {
-                   e.preventDefault()
-                   const modal = document.getElementById("modal")
-                   modal.classList.add("invisible");
-                   modal.classList.add("opacity-0");
-                   modal.style.background = "transparent";
-               }}>Cancel</button>
+               <button className="border-transparent rounded-xl transition-all duration-500 text-2xl px-3 bg-red-600 text-white hover:bg-red-700 m-3 " onClick={closeModal}>Cancel</button>
                 </div>
                     </>
                 )}
@@ -160,21 +224,9 @@ const ProductView = () => {
         
         <section className="absolute top-28 z-0 w-full">
             <div className="h-12 w-full mb-5 mr-5 flex float-right justify-end rounded-2xl ">
-                <button className="bg-green-600 px-5 py-3 text-white  rounded-2xl float-right shadow-xl mx-5" onClick={() => {
-                    setAction("Add")
-                    const modal = document.getElementById("modal")
-                    modal.classList.remove("invisible");
-                    modal.classList.remove("opacity-0");
-                    modal.style.background = "rgba(0,0,0,.5)";
-                }}>Addproduct</button>
-                     <button className="transition-all duration-500 bg-red-500 px-5 text-white rounded-xl text-xl hover:bg-red-600 mx-5"
-                        onClick={() => {
-                            setAction("Delete")
-                            const modal = document.getElementById("modal")
-                            modal.classList.remove("invisible");
-                            modal.classList.remove("opacity-0");
-                            modal.style.background = "rgba(0,0,0,.5)";
-                        }}
+                <button className="bg-green-600 px-5 py-3 text-white  rounded-2xl float-right shadow-xl mx-5" name="Add" onClick={openModalWithAction}>Addproduct</button>
+                     <button className="transition-all duration-500 bg-red-500 px-5 text-white rounded-xl shadow-xl text-xl hover:bg-red-600 mx-5" name="Delete"
+                        onClick={openModalWithAction}
                      >Delete</button>
                      
                 <select className="bg-white shadow-xl border-2  px-6 py-3 rounded-2xl">
