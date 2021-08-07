@@ -2,11 +2,12 @@
 import './index.css';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 import ProductView from "./Pages/Admin/productView"
+import Home from "./Pages/User/Home"
 function App() {
   return <>
   <Router>
     <Switch>
-      <Route path="/admin/product" exact component={ProductView}></Route>
+      <Route path="/user/home" exact component={Home}></Route>
     </Switch>
   </Router>
   </>
