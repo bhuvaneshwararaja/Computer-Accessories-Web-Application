@@ -1,7 +1,7 @@
 # Computer-Accessories-Web-Application
 
 ## About the project
-### Computer accessories web application is an e-commerce website build with the help of React & Flask to sell products.
+### Computer accessories web application is an e-commerce website build with the help of React & Flask to help people to buy computer accessories from the place itself. You can find your products at youe doorstep with a single click.
 
 ## Tech Stack Used
 <div>
