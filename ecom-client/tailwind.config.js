@@ -5,6 +5,9 @@ module.exports = {
       extend: {
         fontFamily: {
           body: ['Lato'],
+          para:['Quicksand'],
+          logo:['Pacifico'],
+          heading:['Nunito']
         },
         colors:{
           grayshade:"#323236"
