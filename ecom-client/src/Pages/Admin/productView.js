@@ -50,9 +50,9 @@ const ProductView = () => {
         fetch("/admin/view/")
         .then(res => res.json())
         .then((data) => {
-           setData(data.Products)
+           setData(data.products)
            
-            setKey(Object.keys(data.Products))
+            setKey(Object.keys(data.products))
             
             
         })
