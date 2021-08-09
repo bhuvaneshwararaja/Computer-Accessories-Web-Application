@@ -2,13 +2,16 @@
 import './index.css';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 import ProductView from "./Pages/Admin/productView"
-import Home from "./Pages/User/Home"
+import __404 from "./Error/404"
+import CkartNavigation from "./Components/ckartNavigation/"
+import CkartHome from "./Pages/ckart/CkartHome"
 function App() {
   return <>
   <Router>
+    <CkartNavigation />
     <Switch>
-      <Route path="/user/home" exact component={Home}></Route>
-      <Route path="/admin/view" exact component={ProductView}></Route>
+      {/* <Route path="/" component={CkartHome} exact /> */}
+      {/* <Route component={__404}/> */}
     </Switch>
   </Router>
   </>
