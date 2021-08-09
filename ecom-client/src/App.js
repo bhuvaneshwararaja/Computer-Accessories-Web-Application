@@ -8,6 +8,7 @@ function App() {
   <Router>
     <Switch>
       <Route path="/user/home" exact component={Home}></Route>
+      <Route path="/admin/view" exact component={ProductView}></Route>
     </Switch>
   </Router>
   </>
