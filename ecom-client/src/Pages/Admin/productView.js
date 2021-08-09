@@ -94,6 +94,7 @@ const ProductView = () => {
             
         })
     },[])
+    console.log(data)
     const closeModal = (e) => {
         e.preventDefault()
                    const modal = document.getElementById("modal")
@@ -307,7 +308,7 @@ const ProductView = () => {
                     <option value="All">ALL</option>
                 </select>
             </div>
-            <section className="w-11/12 m-auto rounded-2xl overflow-x-auto overflow-y-scroll" style={{"height":"45rem"}}>
+            <section className="w-11/12 m-auto rounded-2xl overflow-x-hidden overflow-y-auto" style={{"height":"45rem"}}>
             <table className="w-full shadow-xl ">
             <thead>
                 {['SINO','Image','productName','Category','Description','Price'].map((header,index) => {
