@@ -6,27 +6,64 @@ const ProductView = () => {
     const [deleteCategory,setDeleteCategory] = useState()
     const [filterCategory,setFilterCategory] = useState("All")
     const [Key,setKey] = useState()
-    const catagories = ["Adaptors","Audio & Video accessories","Keyboard & Mouse","Hardisk","Boards","Laptop Skins"]
+    const [subCategory,setSubCategory] = useState()
+    const catagories = ["Adaptors","Audio & Video accessories","Keyboard & Mouse","Components","Laptop Accessories","Storage Devices"]
     const [deleteKey,setDeletKey] = useState([])
     const productDetails = {
         productName:"",
         productDescription:"",
         productPrice:"",
         productCatagory:"",
+        subCategory:"",
         productImage:[]
     }
     const [product,setProduct] = useState(productDetails)
     const HandleInputChange = (e) => {
+        e.preventDefault()
             const {name,value} = e.target;
-            console.log(e.target)
+            if(name === "productCatagory"){
+                switch(value){
+                    case "Audio & Video accessories" :{
+                        setSubCategory("AudioVideoAccessories")
+                        break;
+                    }
+                    case "Keyboard & Mouse" :{
+                        setSubCategory("KeyboardMouse")
+                        break;
+                    }
+                    case "Components" :{
+                        setSubCategory("Components")
+                        break;
+                    }
+                    case "Laptop Accessories" :{
+                        setSubCategory("LaptopAccessories")
+                        break;
+                    }
+                    case "Storage Devices" :{
+                        setSubCategory("StorageDevices")
+                        break;
+                    }
+                    default:{
+                        setSubCategory()
+                    }
+                }
+              
+            }
+            // console.log(e.target)
             setProduct({
                 ...product,
                 [name]:value
             })
            
-            console.log(product)
+            
     }
-
+    const subCategoryList={
+        AudioVideoAccessories:["PC Headsets","PC Microphones","PC speakers","Webcams"],
+        KeyboardMouse:["Numeric Keypads","Gaming Mouse","Gaming Keyboards","Wireless Mouse","Wireless Keyboard"],
+        Components:["Fans & Cooling","Graphics Card","Intenal Hardrives","Internal MemoryCard","MotherBoards","Processors"],
+        LaptopAccessories:["Bags & sleeves","Laptop Charger","Laptop Batteries","Laptop Skins","screen Protectors"],
+        StorageDevices:["External Floppy Drives","External Hardisk","External MemoryCard","Pen Drives"],
+    }
     const uploadCloudinary = async (e) =>{
         const files = e.target.files[0]
 
@@ -93,8 +130,23 @@ const ProductView = () => {
                         return <option key={index} value={data}>{data}</option>
                     })}
                 </select>
+               
                 </div>
-                
+               
+                {subCategory !== undefined ?(
+                    <>
+                     <div className="flex flex-row justify-around">
+                     <label className="w-40 text-2xl">SubCatagory</label>
+                     <select className="transition-all duration-500 bg-white focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" name="subCategory" onChange={HandleInputChange}>
+                         <option value="" default hidden>select catagory</option>
+                         {subCategoryList[subCategory].map((data,index) => {
+                             return <option key={index} value={data}>{data}</option>
+                         })}
+                     </select>
+                    
+                     </div>
+                     </>
+                ):(<></>)}
                
                 <div className="flex flex-row justify-around" >
 
