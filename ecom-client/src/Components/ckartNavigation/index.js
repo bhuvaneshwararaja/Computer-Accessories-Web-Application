@@ -26,9 +26,10 @@ const CkartNavigation = () => {
             setToogleSearch("open")
         }
     }
+
     return <>
-        <header className="w-full flex flex-col">
-            <nav className="flex justify-between items-center h-20 text-xl px-4 font-heading shadow-xl fixed w-full">
+        <header className="w-full flex flex-col ">
+            <nav className="flex justify-between items-center h-16 left-20 top-10 text-xl px-4 font-heading shadow-md fixed w-11/12  m-auto rounded-3xl z-50 bg-white">
                 <Link to="" className="font-logo text-2xl">C-Kart</Link>
 
                 
@@ -55,7 +56,7 @@ const CkartNavigation = () => {
 
                 <Link to="" className="bg-indigo-500 text-white px-3 py-2 rounded-2xl">signin/register</Link>
             </nav>
-            <div className="fixed right-0 w-5 expand transition-all duration-500 flex flex-row-reverse top-24">
+            <div className="fixed right-16 w-5 expand transition-all duration-500 flex flex-row-reverse top-32 z-50">
                 <input type="text" className="border-2 invisible opacity-0 w-0 search transition-all duration-500 px-2 focus:border-indigo-500" placeholder="Search products here !..."></input>
                 <button className="absolute px-4 py-1.5 bg-indigo-500 text-white text-xl btn-search invisible opacity-0 transition-all duration-500">search</button>
                 <button className="border-2 px-4 text-3xl rounded-3xl py-1 bg-indigo-600 text-white"onClick={ToogleBtnSearch}>{toogleSearch === "open" ? <IoMdSearch /> : <IoMdCloseCircle />}</button>
