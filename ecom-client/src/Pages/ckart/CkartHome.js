@@ -1,19 +1,21 @@
 import CkartNavigation from "../../Components/ckartNavigation"
 import {useState,useEffect} from "react"
+
 import {IoMdArrowDropright, IoMdArrowDropleft} from "react-icons/io"
 const CkartHome = () => {
     const [data,setData] = useState()
     const [key,setKey] = useState()
     const [sliderWidth,setSliderWidth] = useState()
+    
     useEffect(() => {
 
         fetch("/admin/view/")
         .then(res => res.json())
         .then((data) => {
            setData(data.products)
-           
             setKey(Object.keys(data.products))  
         })
+        setSliderWidth(document.querySelector(".slider").offsetWidth)
         function handleResize(){
             setSliderWidth(document.querySelector(".slider").offsetWidth)
         }
@@ -22,18 +24,28 @@ const CkartHome = () => {
             window.removeEventListener("resize", handleResize)
         }
         
-    },[])
+    },[sliderWidth])
+     
+    function ChangeOver(){
+        document.querySelector(".scroll").style.visibility = "visible"
+        document.querySelector(".scroll").style.opacity = "1"
+    }
+    function ChangeLeave(){
+        document.querySelector(".scroll").style.visibility = "hidden"
+        document.querySelector(".scroll").style.opacity = "0"
+    }
+
     return <>
 
-    <CkartNavigation />
+    <CkartNavigation />   
         <section className="w-11/12 h-screen  relative top-52 m-auto">
-            <div className="w-inherit bg-white shadow-md rounded-2xl border-2 overflow-x-hidden slider overflo-y-hidden"style={{height:"60%"}} >
+            <div className="w-inherit bg-white shadow-md rounded-2xl border-2 overflow-x-hidden slider overflo-y-hidden"style={{height:"60%"}} onMouseOver={ChangeOver} onMouseLeave={ChangeLeave}>
                     <div className="h-full flex " style={{width: "300%"}}>
                        {data !== undefined && key !== undefined ?(
                             key.slice(0,3).map((productKey,index) => {
                                 const {productName,productDescription,productImage,productPrice} = data[productKey]
                                 return <>
-                                    <div className={`w-full h-full flex p-4 items-center`} >
+                                    <div className={`w-full h-full flex p-4 items-center bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white`} >
                                         <div className="w-1/2 flex flex-col pl-10">
                                         <h1 className="font-logo text-5xl p-2">{productName}</h1>
                                            <p className="font-para p-2 text-2xl">{productDescription}</p>
@@ -48,8 +60,8 @@ const CkartHome = () => {
                                     {productImage.map((image,index) => {
                                         return <>
                                         <div>
-                                          {index === 0 ?   <img src={`${image}`} className="w-80 border-8 p-3 relative top-10 z-10 bg-white border-indigo-500 rounded-full" alt=""></img>:
-                                            <img src={`${image}`} className="w-80 border-8 p-3 border-indigo-500 relative -top-8 z-0 -left-10 rounded-full" alt=""></img>
+                                          {index === 0 ?   <img src={`${image}`} className="w-80  relative top-10 z-10 bg-white rounded-full" alt=""></img>:
+                                            <img src={`${image}`} className="w-80  p-3 relative -top-8 z-0 -left-10 rounded-full" alt=""></img>
                                           }
                                       
                                         </div>
@@ -62,11 +74,11 @@ const CkartHome = () => {
                        ):("")}
                     </div>
             </div>
-            <div className="flex justify-center">
-                        <button className="bg-indigo-500 text-5xl rounded-full text-white my-2 mx-5 shadow-xl" onClick={() => {
+            <div className="absolute right-1/2 top-1/2 invisible opacity-0 transition-all duration-500 scroll" onMouseOver={ChangeOver} onMouseLeave={ChangeLeave}>
+                        <button className="text-5xl rounded-full text-black bg-white my-2 mx-5 shadow-xl" onClick={() => {
                                  document.querySelector(".slider").scrollLeft-=sliderWidth
-                        }}><IoMdArrowDropleft /></button>
-                        <button className="bg-indigo-500 text-5xl rounded-full text-white my-2 mx-5 shadow-xl translate-y-0 shadow-xl" onClick={() => {
+                        }} ><IoMdArrowDropleft /></button>
+                        <button className="bg-white text-black text-5xl rounded-full my-2 mx-5 shadow-xl translate-y-0 shadow-xl" onClick={() => {
                             
                                 document.querySelector(".slider").scrollLeft+=sliderWidth
                         }}><IoMdArrowDropright /></button>
