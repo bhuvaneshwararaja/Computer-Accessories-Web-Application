@@ -1,8 +1,11 @@
 import {Link} from "react-router-dom"
 import {useState} from "react"
+import CKartUserModal from "../../Components/cKartModal"
 import { IoMdCloseCircle,IoMdSearch } from "react-icons/io"
 const CkartNavigation = () => {
     const [toogleSearch,setToogleSearch] = useState("open")
+
+    const [modal,setModal] = useState(false)
     const ToogleBtnSearch = () => {
         let search = document.querySelector(".search");
         let btnSearch = document.querySelector(".btn-search");
@@ -54,7 +57,9 @@ const CkartNavigation = () => {
                     </li>
                 </ul>
 
-                <Link to="" className="bg-indigo-500 text-white px-3 py-2 rounded-2xl">signin/register</Link>
+                <Link to="" className="bg-indigo-500 text-white px-3 py-2 rounded-2xl" onClick={() => {
+                    setModal(true)
+                }}>signin/register</Link>
             </nav>
             <div className="fixed right-16 w-5 expand transition-all duration-500 flex flex-row-reverse top-32 z-50">
                 <input type="text" className="border-2 invisible opacity-0 w-0 search transition-all duration-500 px-2 focus:border-indigo-500" placeholder="Search products here !..."></input>
@@ -62,6 +67,8 @@ const CkartNavigation = () => {
                 <button className="border-2 px-4 text-3xl rounded-3xl py-1 bg-indigo-600 text-white"onClick={ToogleBtnSearch}>{toogleSearch === "open" ? <IoMdSearch /> : <IoMdCloseCircle />}</button>
             </div>
         </header>
+    {modal === true ?  <CKartUserModal stateChanger={setModal} /> :""}
+
     </>
 }
 
