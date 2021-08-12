@@ -1,8 +1,84 @@
 import {FcGoogle} from "react-icons/fc"
 import {useState} from "react"
 import {GrFormClose} from "react-icons/gr"
+import {  checkpass,
+    checkusername,
+    checkpassword,
+    checkmail,
+    checkmobile} from "../../Helper/validate"
 const CKartUserModal = ({stateChanger}) => {
     const [newUser,setNewUser] = useState(true)
+    const [handleUserError,setHandleUserError] =useState()
+    const [handlePasswordError,setHandlePasswordError] =useState()
+    const [handleEmailError,setHandleEmailError] =useState()
+    const [handleMobileError,setHandleMobileError] =useState()
+    const [handleConfirmationError,setHandleConfirmationError] =useState()
+    const newUserRegistration = {
+        firstname:"",
+        email:"",
+        password:"",
+        mobileno:""
+    }
+    const [newRegUser,setNewRegUser] = useState(newUserRegistration)
+    const SaveState = (name,value) => {
+            setNewRegUser({
+                ...newRegUser,
+                [name]:value
+            })
+            console.log(newRegUser)
+    }
+    const HandleInputChange = (e) => {
+        const {name,value} = e.target;
+        if(name === "firstname"){
+            let validate = checkusername(value);
+            if(validate === true){
+                setHandleUserError()
+                SaveState(name,value)
+            }
+            else{
+                setHandleUserError(validate)
+            }
+        }
+        else if(name === "email"){
+            let validate = checkmail(value);
+            if(validate === true){
+                setHandleEmailError()
+                SaveState(name,value)
+            }
+            else{
+                setHandleEmailError(validate)
+            }
+        }
+        else if(name === "password"){
+            let validate = checkpassword(value);
+            if(validate === true){
+                setHandlePasswordError()
+                SaveState(name,value)
+            }
+            else{
+                setHandlePasswordError(validate)
+            }
+        }
+        else if(name === "mobileno"){
+            let validate = checkmobile(value);
+            if(validate === true){
+                setHandleMobileError()
+                SaveState(name,value)
+            }
+            else{
+                setHandleMobileError(validate)
+            }
+        }
+        else if(name === "confirmpassword"){
+            let validate = checkpass(newRegUser.password,value);
+            if(validate === true){
+                setHandleConfirmationError()
+            }
+            else{
+                setHandleConfirmationError(validate)
+            }
+        }
+    }
     return <> 
     <div  className="w-full h-screen bg-red-900 fixed z-50 " style={{background:"rgba(0,0,0,.5"}}>
             <div className="w-1/2 h-3/4 bg-white m-auto flex flex-col justify-center relative top-40 rounded-xl">
@@ -27,23 +103,39 @@ const CKartUserModal = ({stateChanger}) => {
                   {newUser === true ? (<>
                     <tr>
                        <td className="p-2 text-2xl font-para">Firstname</td>
-                       <td className="p-2"><input type="text" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl"></input></td>
+                       <td className="p-2">
+                           <input type="text" name="firstname" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                            <p className="text-red-700">{handleUserError !== undefined ? handleUserError : ""}</p>
+                       
+                       </td>
                    </tr>
                    <tr>
                        <td className="p-2 text-2xl font-para">Email</td>
-                       <td className="p-2 "><input type="Email" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl"></input></td>
+                       <td className="p-2 "><input type="Email" name="email" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                       <p className="text-red-700">{handleEmailError !== undefined ? handleEmailError : ""}</p>
+                       
+                       </td>
                    </tr>
                    <tr>
                        <td className="p-2 text-2xl font-para">Password</td>
-                       <td className="p-2"><input type="password" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl"></input></td>
+                       <td className="p-2"><input type="password" name="password" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                       <p className="text-red-700">{handlePasswordError !== undefined ? handlePasswordError : ""}</p>
+                        
+                       </td>
                    </tr>
                    <tr>
                        <td className="p-2 text-2xl font-para">Confirm-Password</td>
-                       <td className="p-2"><input type="password" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl"></input></td>
+                       <td className="p-2"><input type="password" name="confirmpassword" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                       <p className="text-red-700">{handleConfirmationError !== undefined ? handleConfirmationError : ""}</p>
+                    
+                       </td>
                    </tr>
                    <tr>
                        <td className="p-2 text-2xl font-para">Mobile Number</td>
-                       <td className="p-2"><input type="text" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl"></input></td>
+                       <td className="p-2"><input type="text" name="mobileno" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                       <p className="text-red-700">{handleMobileError !== undefined ? handleMobileError : ""}</p>
+                    
+                       </td>
                    </tr>
                   </>):(<>
                   
@@ -56,7 +148,6 @@ const CKartUserModal = ({stateChanger}) => {
                        <td className="p-2"><input type="password" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl"></input></td>
                    </tr>
                   </>)}
-                   {/* field for otp verification */}
                </table>
                <div className="flex flex-col items-center">
                <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500">Register</button>
