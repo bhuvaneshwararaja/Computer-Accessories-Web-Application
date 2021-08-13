@@ -13,11 +13,13 @@ const CKartUserModal = ({stateChanger}) => {
     const [handleEmailError,setHandleEmailError] =useState()
     const [handleMobileError,setHandleMobileError] =useState()
     const [handleConfirmationError,setHandleConfirmationError] =useState()
+    const [otp,setOtp] = useState()
+    const [verifyMail,setVerifyMail] = useState()
     const newUserRegistration = {
-        firstname:"",
+        firstName:"",
         email:"",
         password:"",
-        mobileno:""
+        mobileNo:""
     }
     const [newRegUser,setNewRegUser] = useState(newUserRegistration)
     const OnUserSubmit = (e) => {
@@ -46,7 +48,7 @@ const CKartUserModal = ({stateChanger}) => {
     }
     const HandleInputChange = (e) => {
         const {name,value} = e.target;
-        if(name === "firstname"){
+        if(name === "firstName"){
             let validate = checkusername(value);
             if(validate === true){
                 setHandleUserError()
@@ -76,7 +78,7 @@ const CKartUserModal = ({stateChanger}) => {
                 setHandlePasswordError(validate)
             }
         }
-        else if(name === "mobileno"){
+        else if(name === "mobileNo"){
             let validate = checkmobile(value);
             if(validate === true){
                 setHandleMobileError()
@@ -95,6 +97,24 @@ const CKartUserModal = ({stateChanger}) => {
                 setHandleConfirmationError(validate)
             }
         }
+    }
+    const VerifyEmail = (e) =>{
+        e.preventDefault()
+        fetch("/user/email-verify/",{
+            'method':"POST",
+               headers:{
+                    
+                   'Content-Type':"application/json",
+                   'accept':"application/json"
+               },
+               body:JSON.stringify({emailVerify:{name:newRegUser.firstName,email:newRegUser.email}})
+           })
+           .then(res => res.json())
+           .then((data) => {
+               console.log(data)
+              
+           })
+
     }
     return <> 
     <div  className="w-full h-screen bg-red-900 fixed z-50 " style={{background:"rgba(0,0,0,.5"}}>
@@ -119,9 +139,9 @@ const CKartUserModal = ({stateChanger}) => {
                 <table className="table m-auto w-9/12">
                   {newUser === true ? (<>
                     <tr>
-                       <td className="p-2 text-2xl font-para">Firstname</td>
+                       <td className="p-2 text-2xl font-para">firstName</td>
                        <td className="p-2">
-                           <input type="text" name="firstname" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                           <input type="text" name="firstName" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
                             <p className="text-red-700">{handleUserError !== undefined ? handleUserError : ""}</p>
                        
                        </td>
@@ -129,6 +149,7 @@ const CKartUserModal = ({stateChanger}) => {
                    <tr>
                        <td className="p-2 text-2xl font-para">Email</td>
                        <td className="p-2 "><input type="Email" name="email" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                       <button className="float-right bg-green-900 text-white px-4 py-2 rounded-xl relative -top-10 " onClick={VerifyEmail}>Verify</button>
                        <p className="text-red-700">{handleEmailError !== undefined ? handleEmailError : ""}</p>
                        
                        </td>
@@ -149,7 +170,7 @@ const CKartUserModal = ({stateChanger}) => {
                    </tr>
                    <tr>
                        <td className="p-2 text-2xl font-para">Mobile Number</td>
-                       <td className="p-2"><input type="text" name="mobileno" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                       <td className="p-2"><input type="text" name="mobileNo" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
                        <p className="text-red-700">{handleMobileError !== undefined ? handleMobileError : ""}</p>
                     
                        </td>
