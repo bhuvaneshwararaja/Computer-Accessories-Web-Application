@@ -22,7 +22,7 @@ const CKartUserModal = ({stateChanger}) => {
     const [newRegUser,setNewRegUser] = useState(newUserRegistration)
     const OnUserSubmit = (e) => {
         e.preventDefault()
-        fetch("/admin/signup/",{
+        fetch("/user/signup/",{
             'method':"POST",
                headers:{
                     
