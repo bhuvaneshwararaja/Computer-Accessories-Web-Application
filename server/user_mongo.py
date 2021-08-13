@@ -1,6 +1,7 @@
 # Import needed libraries
 import pymongo
 from bson.objectid import ObjectId
+import hashlib
 
 class UserMongo:
     def __init__(self):
@@ -32,7 +33,7 @@ class UserMongo:
         dataBase = UserMongo.credential()
         collection = dataBase["UserDetails"]
         for details in enumerate(collection.find({"email": mail})):
-            if details[1]['password'] == password:
+            if details[1]['password'] == (hashlib.md5((password+details[1]['password'][-6:]).encode())).hexdigest():
                 return 1
             return 0
         return -1
