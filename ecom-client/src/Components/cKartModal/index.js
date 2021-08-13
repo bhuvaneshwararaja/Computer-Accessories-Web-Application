@@ -14,7 +14,10 @@ const CKartUserModal = ({stateChanger}) => {
     const [handleMobileError,setHandleMobileError] =useState()
     const [handleConfirmationError,setHandleConfirmationError] =useState()
     const [otp,setOtp] = useState()
-    const [verifyMail,setVerifyMail] = useState()
+    const [otpValid,setOtpValid] = useState()
+    const [verifyMessage,setVerifyMessage] = useState()
+    const [otpSuccess,setOtpSuccess] = useState()
+
     const newUserRegistration = {
         firstName:"",
         email:"",
@@ -36,6 +39,10 @@ const CKartUserModal = ({stateChanger}) => {
            .then(res => res.json())
            .then((data) => {
                console.log(data)
+               document.querySelector("form").reset()
+               setNewUser(false)
+               setOtpSuccess()
+               setVerifyMessage()
               
            })
     }
@@ -59,6 +66,8 @@ const CKartUserModal = ({stateChanger}) => {
             }
         }
         else if(name === "email"){
+            setVerifyMessage()
+            setOtp()
             let validate = checkmail(value);
             if(validate === true){
                 setHandleEmailError()
@@ -97,6 +106,17 @@ const CKartUserModal = ({stateChanger}) => {
                 setHandleConfirmationError(validate)
             }
         }
+        else if(name === "otp"){
+          
+            if(value == otp){
+                
+                setOtp()
+                setOtpSuccess(true)
+            }
+            else{
+                setOtpValid("invalid OTP")
+            }
+        }
     }
     const VerifyEmail = (e) =>{
         e.preventDefault()
@@ -111,7 +131,15 @@ const CKartUserModal = ({stateChanger}) => {
            })
            .then(res => res.json())
            .then((data) => {
-               console.log(data)
+            //    console.log(data)
+            setVerifyMessage()
+            setOtp()
+               if(data.ReplyCode === "1"){
+                   setOtp(data.otp)
+                   setVerifyMessage(data.ReplyMessage)
+                   console.log(true)
+               }
+              
               
            })
 
@@ -148,12 +176,23 @@ const CKartUserModal = ({stateChanger}) => {
                    </tr>
                    <tr>
                        <td className="p-2 text-2xl font-para">Email</td>
-                       <td className="p-2 "><input type="Email" name="email" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
-                       <button className="float-right bg-green-900 text-white px-4 py-2 rounded-xl relative -top-10 " onClick={VerifyEmail}>Verify</button>
+                       <td className="p-2 "><input type="Email" name="email" className={!otpSuccess ? "border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl":"border-2 border-green-600 bg-green-100 w-11/12 py-1 rounded-xl text-xl"} onChange={HandleInputChange} disabled={!otpSuccess ? false :true}></input>
+                       {!otpSuccess ?<button className="float-right bg-green-900 text-white px-4 py-2 rounded-xl relative -top-10 " onClick={VerifyEmail}>Verify</button>:""}
+                       <p className="text-red-700">{verifyMessage !== undefined && !otpSuccess ? verifyMessage : ""}</p>
                        <p className="text-red-700">{handleEmailError !== undefined ? handleEmailError : ""}</p>
                        
                        </td>
                    </tr>
+                   {otp !== undefined ? (<>
+                    <tr>
+                       <td className="p-2 text-2xl font-para">Enter OTP</td>
+                       <td className="p-2 "><input type="text" name="otp" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
+                       <p className="text-red-700">{otpValid !== undefined ? otpValid: ""}</p>
+                       
+                       </td>
+                   </tr>
+                   
+                   </>):""}
                    <tr>
                        <td className="p-2 text-2xl font-para">Password</td>
                        <td className="p-2"><input type="password" name="password" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleInputChange}></input>
@@ -188,7 +227,9 @@ const CKartUserModal = ({stateChanger}) => {
                   </>)}
                </table>
                <div className="flex flex-col items-center">
-               <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500" onClick={OnUserSubmit}>Register</button>
+               {newUser ? <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500" onClick={OnUserSubmit}>Register</button>:
+               <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500" >Login</button>
+               }
                <button className="py-2 px-10 rounded-2xl text-xl text-black flex items-center justify-around shadow-xl border-2 transition-all duration-500"><FcGoogle className="mx-2"/> SignIn with Google</button>
                </div>
                 </form>
