@@ -28,6 +28,8 @@ class User:
     def email_verification():
         try:
             mailVerify = flask.request.json
+            
+            print(mailVerify['name'])
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during email verification"})
 
