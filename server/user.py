@@ -43,7 +43,7 @@ class User:
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error. Email verification failed"})
 
-        return jsonify({"ReplyCode": "1", "ReplyMessage": "Success", "otp": otp})
+        return jsonify({"ReplyCode": "1", "ReplyMessage": "OTP sent to your mail", "otp": otp})
 
     @staticmethod
     def sign_in():
