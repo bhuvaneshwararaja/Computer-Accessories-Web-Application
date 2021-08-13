@@ -15,7 +15,7 @@ app.add_url_rule('/admin/remove/', view_func=Admin.remove_product, methods=['POS
 
 # User route functions, sss
 app.add_url_rule('/user/signup/', view_func=User.sign_up, methods=['POST'])
-app.add_url_rule('/user/email-verify/', view_func=User.email_verification(), methods=['POST'])
+app.add_url_rule('/user/email-verify/', view_func=User.email_verification, methods=['POST'])
 app.add_url_rule('/user/signin/', view_func=User.sign_in, methods=['GET'])
 app.add_url_rule('/user/order/', view_func=User.order_products, methods=['GET'])
 app.add_url_rule('/user/cancel/', view_func=User.order_cancel, methods=['GET'])
