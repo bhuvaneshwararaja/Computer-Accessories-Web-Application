@@ -13,7 +13,6 @@ class User:
     def sign_up():
         try:
             userDetails = flask.request.json
-            print(userDetails)
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during user signup"})
 
@@ -28,6 +27,10 @@ class User:
     def email_verification():
         try:
             mailVerify = flask.request.json
+
+            result = UserMongo.check_email_existence(mailVerify['emailVerify']['email'])
+            if result == 0:
+                return jsonify({"ReplyCode": "0", "ReplyMessage": "Error. Email already exists"})
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during email verification"})
 
@@ -47,7 +50,24 @@ class User:
 
     @staticmethod
     def sign_in():
-        pass
+        try:
+            signinDetails = flask.request.json['emailVerify']
+        except:
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during user signin"})
+
+        try:
+            result = UserMongo.check_password(signinDetails['email'], signinDetails['password'])
+            if result == 0:
+                return jsonify({"ReplyCode": "0", "ReplyMessage": "Login failed. Password incorrect."})
+            elif result == 1:
+                return jsonify({"ReplyCode": "1", "ReplyMessage": "Login success"})
+            else:
+                return jsonify({"ReplyCode": "0", "ReplyMessage": "Login failed. Invalid mail."})
+        except:
+            return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo password retrieval during signin"})
+
+        # return jsonify({"ReplyCode": "1", "ReplyMessage": "Success"})
+
 
     @staticmethod
     def order_products():
