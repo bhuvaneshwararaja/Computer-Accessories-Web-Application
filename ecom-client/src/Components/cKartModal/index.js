@@ -176,8 +176,10 @@ const CKartUserModal = ({stateChanger}) => {
                    </tr>
                    <tr>
                        <td className="p-2 text-2xl font-para">Email</td>
-                       <td className="p-2 "><input type="Email" name="email" className={!otpSuccess ? "border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl":"border-2 border-green-600 bg-green-100 w-11/12 py-1 rounded-xl text-xl"} onChange={HandleInputChange} disabled={!otpSuccess ? false :true}></input>
-                       {!otpSuccess ?<button className="float-right bg-green-900 text-white px-4 py-2 rounded-xl relative -top-10 " onClick={VerifyEmail}>Verify</button>:""}
+                       <td className="p-2 "><div className="flex">
+                       <input type="Email" name="email" className={!otpSuccess ? "border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl":"border-2 border-green-600 bg-green-100 w-11/12 py-1 rounded-xl text-xl"} onChange={HandleInputChange} disabled={!otpSuccess ? false :true}></input>
+                       {!otpSuccess ?<button className="float-right bg-green-900 text-white px-4 py-2 rounded-xl relative  -left-10" onClick={VerifyEmail}>Verify</button>:""}
+                       </div>
                        <p className="text-red-700">{verifyMessage !== undefined && !otpSuccess ? verifyMessage : ""}</p>
                        <p className="text-red-700">{handleEmailError !== undefined ? handleEmailError : ""}</p>
                        
