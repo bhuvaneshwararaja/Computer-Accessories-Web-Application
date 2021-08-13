@@ -1,3 +1,4 @@
+# Import needed libraries
 import flask
 from flask import jsonify
 from admin_mongo import AdminMongo
