@@ -20,9 +20,19 @@ class UserMongo:
         collection.insert_one(user_details)
 
     @staticmethod
-    def check_user_existence(mail):
+    def check_email_existence(mail):
         dataBase = UserMongo.credential()
         collection = dataBase["UserDetails"]
         for i in enumerate(collection.find({"email": mail})):
             return 0
         return 1
+
+    @staticmethod
+    def check_password(mail, password):
+        dataBase = UserMongo.credential()
+        collection = dataBase["UserDetails"]
+        for details in enumerate(collection.find({"email": mail})):
+            if details[1]['password'] == password:
+                return 1
+            return 0
+        return -1
