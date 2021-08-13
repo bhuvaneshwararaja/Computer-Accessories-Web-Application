@@ -20,6 +20,23 @@ const CKartUserModal = ({stateChanger}) => {
         mobileno:""
     }
     const [newRegUser,setNewRegUser] = useState(newUserRegistration)
+    const OnUserSubmit = (e) => {
+        e.preventDefault()
+        fetch("/admin/signup/",{
+            'method':"POST",
+               headers:{
+                    
+                   'Content-Type':"application/json",
+                   'accept':"application/json"
+               },
+               body:JSON.stringify({newUser:newRegUser})
+           })
+           .then(res => res.json())
+           .then((data) => {
+               console.log(data)
+              
+           })
+    }
     const SaveState = (name,value) => {
             setNewRegUser({
                 ...newRegUser,
@@ -150,7 +167,7 @@ const CKartUserModal = ({stateChanger}) => {
                   </>)}
                </table>
                <div className="flex flex-col items-center">
-               <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500">Register</button>
+               <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500" onClick={OnUserSubmit}>Register</button>
                <button className="py-2 px-10 rounded-2xl text-xl text-black flex items-center justify-around shadow-xl border-2 transition-all duration-500"><FcGoogle className="mx-2"/> SignIn with Google</button>
                </div>
                 </form>
