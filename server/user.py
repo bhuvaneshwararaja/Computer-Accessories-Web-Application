@@ -28,6 +28,10 @@ class User:
     def email_verification():
         try:
             mailVerify = flask.request.json
+
+            result = UserMongo.check_user_existence(mailVerify['emailVerify']['email'])
+            if result == 0:
+                return jsonify({"ReplyCode": "0", "ReplyMessage": "Error. Email already exists"})
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during email verification"})
 
