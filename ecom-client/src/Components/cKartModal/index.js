@@ -139,6 +139,10 @@ const CKartUserModal = ({stateChanger}) => {
                    setVerifyMessage(data.ReplyMessage)
                    console.log(true)
                }
+               else{
+                   setOtp()
+                   setVerifyMessage(data.ReplyMessage)
+               }
               
               
            })
