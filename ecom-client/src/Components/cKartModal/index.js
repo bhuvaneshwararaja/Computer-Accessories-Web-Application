@@ -17,6 +17,7 @@ const CKartUserModal = ({stateChanger}) => {
     const [otpValid,setOtpValid] = useState()
     const [verifyMessage,setVerifyMessage] = useState()
     const [otpSuccess,setOtpSuccess] = useState()
+    const [authError,setAuthError] = useState()
 
     const newUserRegistration = {
         firstName:"",
@@ -24,6 +25,11 @@ const CKartUserModal = ({stateChanger}) => {
         password:"",
         mobileNo:""
     }
+    const exisitingUserLogin = {
+        email:"",
+        password:""
+    }
+    const [exisitingUser,setExistingUser] = useState(exisitingUserLogin)
     const [newRegUser,setNewRegUser] = useState(newUserRegistration)
     const OnUserSubmit = (e) => {
         e.preventDefault()
@@ -52,6 +58,42 @@ const CKartUserModal = ({stateChanger}) => {
                 [name]:value
             })
             console.log(newRegUser)
+    }
+
+    const OnCredentialsSubmit = (e) => {
+        e.preventDefault()
+        fetch("/user/signin/",{
+            'method':"POST",
+               headers:{
+                    
+                   'Content-Type':"application/json",
+                   'accept':"application/json"
+               },
+               body:JSON.stringify({loginCredential:exisitingUser})
+           })
+           .then(res => res.json())
+           .then((data) => {
+               console.log(data)
+               if(data.ReplyCode == '1'){
+                document.querySelector("form").reset()
+                console.log(true)
+               }
+               else{
+                   setAuthError(data.ReplyMessage)
+               }
+               
+               
+              
+           })
+
+    }
+    const HandleLoginInputChange = (e) => {
+        const {name,value} = e.target
+        console.log(exisitingUser)
+        setExistingUser({
+            ...exisitingUser,
+            [name]:value
+        })
     }
     const HandleInputChange = (e) => {
         const {name,value} = e.target;
@@ -159,15 +201,18 @@ const CKartUserModal = ({stateChanger}) => {
                 <div className="flex justify-center">
                 <button className={newUser === false ? "py-2 m-5 px-10  rounded-2xl text-black hover:bg-indigo-500 hover:text-white  border-2 shadow-xl transition-all duration-500":"py-2 m-5 px-10  rounded-2xl text-white bg-indigo-500 hover:text-white  border-2 shadow-xl transition-all duration-500"} onClick={(e) => {
                     e.preventDefault();
+                    setAuthError()
                     setNewUser(true)
                     
                 }}>Register</button>
                <button className={newUser === true ? "py-2 m-5 px-10  rounded-2xl text-black hover:bg-indigo-500 hover:text-white  border-2 shadow-xl transition-all duration-500":"py-2 m-5 px-10  rounded-2xl text-white bg-indigo-500 hover:text-white  border-2 shadow-xl transition-all duration-500"} onClick={(e) => {
                     e.preventDefault();
+                    setAuthError()
                     setNewUser(false)
                 }}>Login</button>
                 </div>
                 <form>
+                <p className="text-red-700 text-center">{authError !== undefined ? authError : ""}</p>
                 <table className="table m-auto w-9/12">
                   {newUser === true ? (<>
                     <tr>
@@ -221,20 +266,20 @@ const CKartUserModal = ({stateChanger}) => {
                        </td>
                    </tr>
                   </>):(<>
-                  
+                 
                    <tr>
                        <td className="p-2 text-2xl font-para">Email</td>
-                       <td className="p-2 "><input type="Email" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl"></input></td>
+                       <td className="p-2 "><input type="email" name="email" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleLoginInputChange}></input></td>
                    </tr>
                    <tr>
                        <td className="p-2 text-2xl font-para">Password</td>
-                       <td className="p-2"><input type="password" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl"></input></td>
+                       <td className="p-2"><input type="password" name="password" className="border-2 w-11/12 py-1 focus:border-indigo-500 rounded-xl text-xl" onChange={HandleLoginInputChange}></input></td>
                    </tr>
                   </>)}
                </table>
                <div className="flex flex-col items-center">
                {newUser ? <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500" onClick={OnUserSubmit}>Register</button>:
-               <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500" >Login</button>
+               <button className="py-2 px-10 w-40 m-5 rounded-2xl text-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white hover:shadow-xl transition-all duration-500" onClick={OnCredentialsSubmit} >Login</button>
                }
                <button className="py-2 px-10 rounded-2xl text-xl text-black flex items-center justify-around shadow-xl border-2 transition-all duration-500"><FcGoogle className="mx-2"/> SignIn with Google</button>
                </div>
