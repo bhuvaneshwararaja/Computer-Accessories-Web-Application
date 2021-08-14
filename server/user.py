@@ -56,7 +56,6 @@ class User:
     def sign_in():
         try:
             signinDetails = flask.request.json['loginCredential']
-            print(signinDetails)
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during user signin"})
 
