@@ -35,5 +35,5 @@ class UserMongo:
         for details in enumerate(collection.find({"email": mail})):
             if details[1]['password'] == (hashlib.md5((password+details[1]['password'][-6:]).encode())).hexdigest():
                 return 1
-            return 0
-        return -1
+        return 0
+        
