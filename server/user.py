@@ -55,18 +55,18 @@ class User:
     @staticmethod
     def sign_in():
         try:
-            signinDetails = flask.request.json['emailVerify']
+            signinDetails = flask.request.json['loginCredential']
+            print(signinDetails)
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in json object receive during user signin"})
 
         try:
             result = UserMongo.check_password(signinDetails['email'], signinDetails['password'])
-            if result == 0:
-                return jsonify({"ReplyCode": "0", "ReplyMessage": "Login failed. Password incorrect."})
-            elif result == 1:
+            
+            if result == 1:
                 return jsonify({"ReplyCode": "1", "ReplyMessage": "Login success"})
             else:
-                return jsonify({"ReplyCode": "0", "ReplyMessage": "Login failed. Invalid mail."})
+                return jsonify({"ReplyCode": "0", "ReplyMessage": "Incorrect Mail or Password"})
         except:
             return jsonify({"ReplyCode": "0", "ReplyMessage": "Error in mongo password retrieval during signin"})
 
