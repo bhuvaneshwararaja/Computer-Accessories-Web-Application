@@ -33,7 +33,6 @@ class UserMongo:
         dataBase = UserMongo.credential()
         collection = dataBase["UserDetails"]
         for details in enumerate(collection.find({"email": mail})):
-            if details[1]['password'] == (hashlib.md5((password+details[1]['password'][-6:]).encode())).hexdigest():
+            if details[1]['password'][:-6] == (hashlib.md5((password+details[1]['password'][-6:]).encode())).hexdigest():
                 return 1
         return 0
-        
