@@ -1,0 +1,3 @@
+.card:hover > .cover{
+  background-color:rgba(0,0,0,.2);
+}
