@@ -23,7 +23,18 @@ const CKartUserModal = ({stateChanger}) => {
         firstName:"",
         email:"",
         password:"",
-        mobileNo:""
+        mobileNo:"",
+        address:{
+            addressLine:"",
+            city:"",
+            state:"",
+            pincode:""
+        },
+        WishList:[],
+        cart:[{
+            productId:"",
+            status:""
+        }]
     }
     const exisitingUserLogin = {
         email:"",
