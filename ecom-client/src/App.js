@@ -8,7 +8,7 @@ function App() {
   return <>
   <Router>
     <Switch>
-      <Route path="/" component={CkartHome} exact /> 
+      <Route path="/" component={ProductView} exact /> 
       <Route component={__404}/>
     </Switch>
   </Router>
