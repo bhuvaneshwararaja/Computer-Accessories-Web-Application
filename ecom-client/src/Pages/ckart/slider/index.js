@@ -18,7 +18,7 @@ const BannerSlider = ({product}) => {
             window.removeEventListener("resize", handleResize)
         }
         
-    },[sliderWidth])
+    },[sliderWidth,product])
     function ChangeOver(){
         document.querySelector(".scroll").style.visibility = "visible"
         document.querySelector(".scroll").style.opacity = "1"
