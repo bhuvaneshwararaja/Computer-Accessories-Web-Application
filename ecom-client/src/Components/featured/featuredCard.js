@@ -3,7 +3,7 @@ import "./style.css"
 const FeaturedCard = ({image}) => {
     const cardClr = ["bg-indigo-500","bg-red-500","bg-green-500","bg-gray-500","bg-yellow-500","bg-blue-500"]
     return <>
-      <div className="flex w-11/12 mt-10 flex-wrap justify-center">
+      <div className="flex w-full mt-10 flex-wrap justify-center">
         {image.map((img,index) => {
             return <>
                 <div className={`w-96 flex  ${cardClr[index]} rounded-xl shadow-2xl h-36 m-2 card`}>
