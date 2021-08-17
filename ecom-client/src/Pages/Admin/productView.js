@@ -15,7 +15,9 @@ const ProductView = () => {
         productPrice:"",
         productCatagory:"",
         subCategory:"",
-        productImage:[]
+        productImage:[],
+        quantity:"",
+        offer:""
     }
     const [product,setProduct] = useState(productDetails)
     const HandleInputChange = (e) => {
@@ -155,8 +157,16 @@ const ProductView = () => {
                 <textarea type="text" name="productDescription" className="transition-all duration-500 focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700 resize-none" placeholder="Product description"onChange={HandleInputChange}></textarea>
                 </div>
                 <div className="flex flex-row justify-around">
+                <label className="w-40 text-2xl">Quantity</label>
+                <input type="text" name="quantity" className="transition-all duration-500 focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" placeholder="quantity" onChange={HandleInputChange}></input>
+                </div>
+                <div className="flex flex-row justify-around">
                 <label className="w-40 text-2xl">ProdutPrice</label>
                 <input type="text" name="productPrice" className="transition-all duration-500 focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" placeholder="product price" onChange={HandleInputChange}></input>
+                </div>
+                <div className="flex flex-row justify-around">
+                <label className="w-40 text-2xl">Offer in %</label>
+                <input type="text" name="offer" className="transition-all duration-500 focus:border-transparent focus:ring-2 focus:ring-green-700 w-96 p-2 border-b-2 border-red-700" placeholder="Offer in %" onChange={HandleInputChange}></input>
                 </div>
                     <div className="flex flex-row justify-around">
                     <label className="w-40 text-2xl">ProductImage</label>
