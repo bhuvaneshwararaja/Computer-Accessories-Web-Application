@@ -29,7 +29,7 @@ const BannerSlider = ({product}) => {
     }
 
     return <>
-         <div className="w-inherit bg-white shadow-md rounded-2xl border-2 overflow-x-hidden slider overflo-y-hidden"style={{height:"60%"}} onMouseOver={ChangeOver} onMouseLeave={ChangeLeave}>
+         <div className="w-11/12 m-auto bg-white shadow-md rounded-2xl border-2 overflow-x-hidden slider overflo-y-hidden"style={{height:"60%"}} onMouseOver={ChangeOver} onMouseLeave={ChangeLeave}>
                     <div className="h-full flex " style={{width: "300%"}}>
                        {data !== undefined && key !== undefined ?(
                             key.slice(0,3).map((productKey,index) => {
