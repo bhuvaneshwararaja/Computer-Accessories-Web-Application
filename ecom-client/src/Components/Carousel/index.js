@@ -27,7 +27,7 @@ const CarouselCards  = ({category,data,keyVal,keys}) => {
     {specifiCategory.slice(0,10).map((val,index) => {
     const {productName,productPrice,offer,quantity,productImage,subCategory} = data[val]
 
-         return   <div className="w-64 h-auto p-4 border-2 rounded-2xl shadow-md m-2">
+         return   <div className="w-64 h-auto p-4 border-2 rounded-2xl shadow-md m-2" >
             <div>
                 <img src={productImage[0]} alt="" className="w-48 h-48 transition-all duration-900" onMouseOver={(e) => { 
                     e.target.src = productImage[1]
@@ -42,7 +42,7 @@ const CarouselCards  = ({category,data,keyVal,keys}) => {
             <h4 className="font-para text-xl font-bold">Price : {Math.round(productPrice-(productPrice *offer)/100)} </h4>
             <h5 className="font-para text-gray-500 ">You saved Rs.{Math.round((productPrice *offer)/100)}({offer}%)</h5>
            </div>
-            <div className="flex justify-center mt-2">
+            <div className="flex btns justify-center mt-2 ">
                 <button className="bg-indigo-500 px-2 py-1 text-xl text-white m-1"><IoIosHeart /></button>
                 <button className="bg-indigo-500 px-2 py-1 text-xl text-white m-1"><IoIosCart /></button>
                 <button className="bg-indigo-500 px-2 py-1 text-xl text-white m-1"><IoIosEye /></button>
