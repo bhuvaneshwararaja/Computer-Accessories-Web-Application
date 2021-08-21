@@ -5,6 +5,7 @@ const BannerSlider = ({product}) => {
     const [data,setData] = useState()
     const [key,setKey] = useState()
     const [sliderWidth,setSliderWidth] = useState()
+    const [sliderIndex,setSliderIndex] = useState(0)
 
     useEffect(() => {
             setData(product)
@@ -17,7 +18,8 @@ const BannerSlider = ({product}) => {
         return _ => {
             window.removeEventListener("resize", handleResize)
         }
-        
+       
+
     },[sliderWidth,product])
     function ChangeOver(){
         document.querySelector(".scroll").style.visibility = "visible"
@@ -28,6 +30,10 @@ const BannerSlider = ({product}) => {
         document.querySelector(".scroll").style.opacity = "0"
     }
 
+    
+
+
+
     return <>
          <div className="w-11/12 m-auto bg-white shadow-md rounded-2xl border-2 overflow-x-hidden slider overflo-y-hidden"style={{height:"60%"}} onMouseOver={ChangeOver} onMouseLeave={ChangeLeave}>
                     <div className="h-full flex " style={{width: "300%"}}>
@@ -35,7 +41,7 @@ const BannerSlider = ({product}) => {
                             key.slice(0,3).map((productKey,index) => {
                                 const {productName,productDescription,productImage,productPrice} = data[productKey]
                                 return <>
-                                    <div className={`w-full h-full flex p-4 items-center bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 text-white`} >
+                                    <div className={`w-full h-full flex p-4 items-center  text-black`} >
                                         <div className="w-1/2 flex flex-col pl-10">
                                         <h1 className="font-logo text-5xl p-2">{productName}</h1>
                                            <p className="font-para p-2 text-2xl">{productDescription}</p>
@@ -51,7 +57,7 @@ const BannerSlider = ({product}) => {
                                         return <>
                                         <div>
                                           {index === 0 ?   <img src={`${image}`} className="w-80  relative top-10 z-10 bg-white rounded-full" alt=""></img>:
-                                            <img src={`${image}`} className="w-80  p-3 relative -top-8 z-0 -left-10 rounded-full" alt=""></img>
+                                            <img src={`${image}`} className="w-80  p-3 relative -top-8 z-0 -left-10 " alt=""></img>
                                           }
                                       
                                         </div>
