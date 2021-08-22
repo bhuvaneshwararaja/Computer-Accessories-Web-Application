@@ -1,6 +1,7 @@
 import {useState,useEffect} from "react"
 import {IoMdArrowDropright, IoMdArrowDropleft} from "react-icons/io"
 import ProductCards from "../ProductCards"
+import Roll from 'react-reveal/Roll';
 const CarouselCards  = ({category,data,keyVal,keys}) => {
 
     const [sliderWidth,setSliderWidth] = useState()
@@ -24,7 +25,9 @@ const CarouselCards  = ({category,data,keyVal,keys}) => {
    <div className="flex h-ful" style={{width:"2720px"}}>
     {specifiCategory.slice(0,10).map((val,index) => {
 
-    return <ProductCards product={data[val]} id={val}/>
+    return <Roll left>
+        <ProductCards product={data[val]} id={val}/>
+    </Roll>
        
        })}
     </div>
