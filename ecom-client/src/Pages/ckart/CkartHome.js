@@ -8,6 +8,9 @@ import BannerSlider from "./slider"
 import FeaturedCard from "../../Components/featured/featuredCard"
 import CarouselCards from "../../Components/Carousel"
 import CkartFooter from "../../Components/Footer"
+import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
+import PulseLoader from "react-spinners/PulseLoader";
+
 const CkartHome = () => {
     
     const dispatch = useDispatch()
@@ -22,12 +25,13 @@ const CkartHome = () => {
 
     return <>
 
-    <CkartNavigation />   
-        <section className="w-full h-screen  relative top-52 m-auto">
+   
         {loading === false ? (  
             <>
+             <CkartNavigation />   
+        <section className="w-full h-screen  relative top-52 m-auto">
             <BannerSlider product={products.products}/>
-            <h1 className="font-heading text-center mt-3 text-4xl">Featured Catagory</h1>
+           
             <FeaturedCard image={["Adaptors","Audio&VideoAccessories","Components","Keyboard&Mouse","LaptopAccessories","StorageDevices"]} />
             {["Audio & Video accessories","Components"].map((catagory,index) => {
                 return <div className="mt-10">
@@ -35,11 +39,7 @@ const CkartHome = () => {
                           <CarouselCards keys={index} data={products.products} category={catagory} keyVal={Object.keys(products.products)}/>
                           </div>
             })}
-  
-         
-            </>
-        ) :""}
-        <section className="w-11/12 h-auto border-t-2 border-b-2 mt-10 m-auto">
+               <section className="w-11/12 h-auto border-t-2 border-b-2 mt-10 m-auto">
             <ul className="flex w-full justify-around items-center  mt-4 mb-4">
                 <li className="p-2 text-xl w-full">
                     <RiTruckLine className="text-4xl w-full mb-2 text-indigo-700"/>
@@ -62,6 +62,19 @@ const CkartHome = () => {
 
         <CkartFooter />
         </section>
+       
+         
+            </>
+        ) : <div className="w-full h-screen flex flex-col justify-center items-center">
+        <ClimbingBoxLoader color="#2A2992" loading  size={20} />
+        <div className="flex justify-center items-center">
+        <h1 className="text-4xl font-logo text-indigo-700 ml-8 mr-2">C-Kart</h1>
+        <PulseLoader color="#2A2992" loading  size={15} />
+
+
+        </div>
+    </div>}
+     
 
        
         
