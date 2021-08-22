@@ -18,14 +18,17 @@ const Catagory = () => {
     return <>
     <CkartNavigation />
         {loading === false ? (<>
-            <div className="w-11/12  h-full m-auto flex justify-center flex-wrap relative top-36">
+            <div className="w-11/12  h-auto mt-32 m-auto flex justify-center flex-wrap ">
             
             {Object.keys(products.products).map((val,index) => {
                 return <ProductCards product={products.products[val]} id={val}/>
             })}
+
             </div>
+            <CkartFooter/>
+            
         </>):""}
-        <CkartFooter/>
+        
     </>
 }
 
