@@ -64,7 +64,7 @@ const CkartNavigation = () => {
                         <Link to="" className="transition-all duration-500 border-transparent border-b-2 hover:border-indigo-900 hover:text-indigo-900">Home</Link>
                     </li>
                     <li className="px-2">
-                        <Link to="" className="transition-all duration-500 border-transparent border-b-2 hover:border-indigo-900 hover:text-indigo-900">Category</Link>
+                        <Link to="/category" className="transition-all duration-500 border-transparent border-b-2 hover:border-indigo-900 hover:text-indigo-900">Category</Link>
                     </li>
                     <li className="px-2">
                         <Link to="" className="transition-all duration-500 border-transparent border-b-2 hover:border-indigo-900 hover:text-indigo-900">WhishList</Link>
