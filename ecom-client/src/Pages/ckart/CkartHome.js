@@ -29,7 +29,7 @@ const CkartHome = () => {
             <BannerSlider product={products.products}/>
             <h1 className="font-heading text-center mt-3 text-4xl">Featured Catagory</h1>
             <FeaturedCard image={["Adaptors","Audio&VideoAccessories","Components","Keyboard&Mouse","LaptopAccessories","StorageDevices"]} />
-            {["Audio & Video accessories","Keyboard & Mouse"].map((catagory,index) => {
+            {["Audio & Video accessories","Components"].map((catagory,index) => {
                 return <div className="mt-10">
                           <h1 className="font-heading w-11/12 m-auto text-center text-2xl">{catagory}</h1>
                           <CarouselCards keys={index} data={products.products} category={catagory} keyVal={Object.keys(products.products)}/>
