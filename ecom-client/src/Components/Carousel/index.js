@@ -2,7 +2,7 @@ import {useState,useEffect} from "react"
 import {IoMdArrowDropright, IoMdArrowDropleft} from "react-icons/io"
 import ProductCards from "../ProductCards"
 import Roll from 'react-reveal/Roll';
-const CarouselCards  = ({category,data,keyVal,keys}) => {
+const CarouselCards  = ({category,data,keyVal,keys,loading}) => {
 
     const [sliderWidth,setSliderWidth] = useState()
    
@@ -20,14 +20,14 @@ const CarouselCards  = ({category,data,keyVal,keys}) => {
     }
     
 },[sliderWidth])
+console.log(loading)
     return <>
    <div className="w-11/12 m-auto mt-5 relative  overflow-hidden card-slider" style={{height:"auto"}}>
    <div className="flex h-ful" style={{width:"2720px"}}>
     {specifiCategory.slice(0,10).map((val,index) => {
 
-    return <Roll left>
-        <ProductCards product={data[val]} id={val}/>
-    </Roll>
+     return <ProductCards product={data[val]} loading={false} id={val}/>
+  
        
        })}
     </div>
